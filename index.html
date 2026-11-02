@@ -1,0 +1,191 @@
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#071b2b">
+<title>EHSAN | تعمیرکار هوشمند</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#071b2b;color:#edf6fa;font-family:Tahoma,Arial,sans-serif}
+header{padding:25px 18px;background:linear-gradient(135deg,#092d40,#087e8b);border-bottom:1px solid #1d7180}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:54px;height:54px;border:2px solid #53e0cf;border-radius:16px;display:grid;place-items:center;font-size:27px}
+h1{font-size:25px;margin:0;color:#62ead8}
+header p{margin:8px 0 0;color:#d0e9ed;font-size:12px}
+main{max-width:650px;margin:auto;padding:17px}
+.hero{padding:20px 5px 24px}
+.hero h2{font-size:22px;margin:0 0 10px}
+.hero p{font-size:13px;color:#a9c3d0;line-height:2}
+.card{background:#102c40;border:1px solid #23465b;border-radius:17px;padding:18px;margin-bottom:15px}
+.card h3{font-size:16px;margin:0 0 17px;color:#5ee3d3}
+label{display:block;font-size:13px;margin:13px 0 8px;color:#c8dce5}
+select,textarea,input{width:100%;padding:13px;background:#081d2d;color:white;border:1px solid #34566b;border-radius:10px;font-family:inherit;font-size:14px}
+textarea{min-height:105px;resize:vertical;line-height:1.9}
+button{width:100%;padding:14px;border:0;border-radius:11px;background:linear-gradient(90deg,#08a89c,#36d6c0);color:#06252d;font-family:inherit;font-size:15px;font-weight:bold;margin-top:15px;cursor:pointer}
+button:active{opacity:.8}
+.result{display:none;line-height:2;font-size:13px}
+.result h3{color:#61e3d3}
+.result ul{padding-right:20px}
+.warning{color:#ffd18a;background:#49351b;padding:12px;border-radius:10px;margin-top:12px}
+.features{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.feature{background:#0b2233;border:1px solid #24465b;border-radius:12px;padding:14px;font-size:12px;line-height:2}
+.feature b{display:block;color:#5ee3d3;font-size:14px}
+footer{text-align:center;color:#7896a7;font-size:11px;padding:25px}
+</style>
+</head>
+<body>
+<header>
+<div class="brand">
+<div class="logo">🔧</div>
+<div>
+<h1>EHSAN</h1>
+<div style="font-size:12px;color:white;margin-top:5px">تعمیرکار هوشمند خودرو</div>
+</div>
+</div>
+<p>دستیار هوشمند تشخیص و راهنمای تعمیر خودرو</p>
+</header>
+
+<main>
+<section class="hero">
+<h2>به مکانیک هوشمند احسان خوش آمدید</h2>
+<p>مشکل خودروی خود را ثبت کنید تا راهنمای اولیه عیب‌یابی و بررسی قطعات احتمالی را دریافت کنید.</p>
+</section>
+
+<section class="card">
+<h3>🚘 مشخصات خودرو</h3>
+<label>سازنده خودرو</label>
+<select id="brand" onchange="changeModels()">
+<option value="">انتخاب سازنده</option>
+<option>ایران خودرو</option>
+<option>سایپا</option>
+<option>زوتی</option>
+<option>سایر خودروها</option>
+</select>
+
+<label>مدل خودرو</label>
+<select id="model">
+<option value="">ابتدا سازنده را انتخاب کنید</option>
+</select>
+
+<label>سال ساخت</label>
+<input id="year" type="number" placeholder="مثلاً ۱۳۹۵">
+</section>
+
+<section class="card">
+<h3>🛠️ شرح مشکل خودرو</h3>
+<label>مشکل خودرو را توضیح دهید</label>
+<textarea id="problem" placeholder="مثلاً خودرو در سربالایی قدرت ندارد، موتور لرزش دارد یا صدای غیرعادی شنیده می‌شود..."></textarea>
+
+<label>وضعیت چراغ هشدار</label>
+<select id="light">
+<option>چراغ هشدار روشن نیست</option>
+<option>چراغ چک روشن است</option>
+<option>چراغ روغن روشن است</option>
+<option>چراغ دمای موتور روشن است</option>
+<option>چراغ باتری روشن است</option>
+<option>چراغ ABS روشن است</option>
+<option>سایر هشدارها</option>
+</select>
+
+<button onclick="diagnose()">🔍 بررسی و عیب‌یابی اولیه</button>
+</section>
+
+<section class="card result" id="result">
+<h3>📋 گزارش اولیه EHSAN</h3>
+<div id="report"></div>
+</section>
+
+<section class="card">
+<h3>✨ امکانات پلتفرم احسان</h3>
+<div class="features">
+<div class="feature">🔍 <b>عیب‌یابی هوشمند</b>بررسی علائم خرابی</div>
+<div class="feature">🎙️ <b>تشخیص صوتی</b>تحلیل صدای خودرو در نسخه‌های بعدی</div>
+<div class="feature">📷 <b>تشخیص تصویری</b>بررسی قطعات با عکس</div>
+<div class="feature">🚗 <b>بانک خودرو</b>اطلاعات خودروهای داخلی</div>
+<div class="feature">🔌 <b>اتصال دیاگ</b>بررسی خطاهای OBD2</div>
+<div class="feature">👨‍🔧 <b>تعمیرکاران</b>ارتباط با متخصصان</div>
+</div>
+</section>
+</main>
+
+<footer>
+EHSAN SMART AUTOMOTIVE<br>
+نسخه اولیه پلتفرم تعمیرکار هوشمند احسان
+</footer>
+
+<script>
+const models={
+"ایران خودرو":["پژو ۲۰۶","پژو ۲۰۷","پژو ۴۰۵","پژو پارس","سمند","دنا","رانا","تارا","سورن"],
+"سایپا":["پراید","تیبا","ساینا","کوییک","شاهین","اطلس"],
+"زوتی":["آریو","Z300"],
+"سایر خودروها":["سایر"]
+};
+
+function changeModels(){
+const brand=document.getElementById("brand").value;
+const model=document.getElementById("model");
+model.innerHTML='<option value="">انتخاب مدل خودرو</option>';
+(models[brand]||[]).forEach(item=>{
+const option=document.createElement("option");
+option.textContent=item;
+option.value=item;
+model.appendChild(option);
+});
+}
+
+function diagnose(){
+const brand=document.getElementById("brand").value;
+const model=document.getElementById("model").value;
+const problem=document.getElementById("problem").value.trim();
+const light=document.getElementById("light").value;
+const year=document.getElementById("year").value;
+
+if(!brand||!model||!problem){
+alert("لطفاً سازنده، مدل خودرو و شرح مشکل را وارد کنید.");
+return;
+}
+
+let suggestions=[];
+const p=problem.toLowerCase();
+
+if(p.includes("داغ")||p.includes("جوش")||p.includes("حرارت")){
+suggestions=["بررسی سطح مایع خنک‌کننده پس از سرد شدن موتور","بررسی عملکرد فن رادیاتور","بررسی ترموستات و رادیاتور"];
+}else if(p.includes("لرزش")||p.includes("ریپ")){
+suggestions=["بررسی شمع و کوئل","بررسی انژکتورها و سیستم سوخت‌رسانی","بررسی دسته‌موتورها"];
+}else if(p.includes("قدرت")||p.includes("شتاب")||p.includes("سربالایی")){
+suggestions=["بررسی فیلتر هوا و مسیر ورودی هوا","بررسی سیستم سوخت‌رسانی","بررسی شمع‌ها و خطاهای ECU","بررسی کلاچ یا گیربکس متناسب با نوع خودرو"];
+}else if(p.includes("صدا")||p.includes("تق تق")||p.includes("سوت")){
+suggestions=["تعیین محل دقیق صدای موتور یا جلوبندی","بررسی تسمه‌ها و بلبرینگ‌ها","بررسی اتصالات و قطعات متحرک"];
+}else if(p.includes("استارت")||p.includes("روشن")){
+suggestions=["بررسی باتری و اتصالات آن","بررسی استارت و فیوزها","بررسی پمپ بنزین و سیستم جرقه"];
+}else{
+suggestions=["بررسی ظاهری قطعات مرتبط با مشکل","خواندن خطاهای ECU با دستگاه دیاگ","انجام تست تخصصی توسط تعمیرکار"];
+}
+
+if(light==="چراغ روغن روشن است"){
+suggestions.unshift("هشدار جدی: فشار روغن موتور باید فوراً بررسی شود.");
+}
+if(light==="چراغ دمای موتور روشن است"){
+suggestions.unshift("هشدار: احتمال داغ شدن موتور وجود دارد.");
+}
+
+let warning="این گزارش یک بررسی اولیه و مبتنی بر کلمات شرح مشکل است؛ تشخیص قطعی به بررسی فنی نیاز دارد.";
+if(light==="چراغ روغن روشن است"||light==="چراغ دمای موتور روشن است"){
+warning="خودرو را در محل امن متوقف کنید و موتور را خاموش کنید. در حالت هشدار روغن یا دمای بالا رانندگی را ادامه ندهید. در صورت نیاز از امداد استفاده کنید.";
+}
+
+document.getElementById("report").innerHTML=
+"<p><b>خودرو:</b> "+brand+" - "+model+"</p>"+
+"<p><b>سال ساخت:</b> "+(year||"ثبت نشده")+"</p>"+
+"<p><b>چراغ هشدار:</b> "+light+"</p>"+
+"<p><b>مشکل ثبت‌شده:</b> "+problem.replace(/</g,"&lt;").replace(/>/g,"&gt;")+"</p>"+
+"<h3>موارد پیشنهادی برای بررسی</h3><ul>"+suggestions.map(s=>"<li>"+s+"</li>").join("")+"</ul>"+
+'<div class="warning">⚠️ '+warning+'</div>';
+document.getElementById("result").style.display="block";
+document.getElementById("result").scrollIntoView({behavior:"smooth"});
+}
+</script>
+</body>
+</html>
