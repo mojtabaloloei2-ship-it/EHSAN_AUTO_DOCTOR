@@ -1,0 +1,128 @@
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مکانیک هوشمند احسان</title>
+<style>
+*{box-sizing:border-box}
+body{
+margin:0;
+font-family:Tahoma,Arial,sans-serif;
+background:#101b2b;
+color:white;
+}
+header{
+background:linear-gradient(135deg,#087e8b,#123c58);
+padding:25px 15px;
+text-align:center;
+}
+.logo{font-size:34px;font-weight:bold;color:#fff}
+header p{color:#d9f5f4}
+main{max-width:650px;margin:auto;padding:18px}
+.card{
+background:#1c2c40;
+padding:20px;
+border-radius:16px;
+margin:15px 0;
+border:1px solid #344b63;
+}
+h2{color:#36d6c4;font-size:19px}
+select,input,textarea,button{
+width:100%;
+padding:13px;
+margin:8px 0;
+border-radius:9px;
+border:1px solid #52677e;
+font-size:15px;
+}
+select,input,textarea{
+background:#101b2b;color:white;
+}
+button{
+background:#08a99d;
+color:white;
+border:0;
+font-weight:bold;
+cursor:pointer;
+}
+button:hover{background:#087e8b}
+#result{
+background:#102f39;
+padding:15px;
+border-radius:10px;
+line-height:2;
+display:none;
+}
+footer{text-align:center;padding:25px;color:#9eb4c7}
+</style>
+</head>
+<body>
+<header>
+<div class="logo">EHSAN | احسان</div>
+<h2 style="color:white">مکانیک هوشمند خودرو</h2>
+<p>تشخیص هوشمند، تعمیر مطمئن، رانندگی بهتر</p>
+</header>
+
+<main>
+<div class="card">
+<h2>🚘 انتخاب خودرو</h2>
+<select id="car">
+<option value="">خودرو را انتخاب کنید</option>
+<option>پژو 206</option>
+<option>پژو 207</option>
+<option>پژو 405</option>
+<option>سمند</option>
+<option>دنا</option>
+<option>پراید</option>
+<option>تیبا</option>
+<option>ساینا</option>
+<option>کوییک</option>
+<option>پارس</option>
+<option>آریو</option>
+<option>سایر خودروها</option>
+</select>
+</div>
+
+<div class="card">
+<h2>🔧 عیب‌یابی خودرو</h2>
+<textarea id="problem" rows="4" placeholder="مشکل خودرو را توضیح دهید؛ مثلاً موتور لرزش دارد یا خودرو بد روشن می‌شود..."></textarea>
+<button onclick="diagnose()">بررسی مشکل خودرو</button>
+<div id="result"></div>
+</div>
+
+<div class="card">
+<h2>🛠️ خدمات مکانیکی احسان</h2>
+<p>• راهنمای تعمیر موتور</p>
+<p>• بررسی گیربکس</p>
+<p>• سیستم برق و انژکتور</p>
+<p>• سیستم ترمز و تعلیق</p>
+<p>• راهنمای قطعات یدکی</p>
+</div>
+</main>
+
+<footer>
+EHSAN AUTO AI<br>
+نسخه اولیه پلتفرم مکانیک هوشمند احسان
+</footer>
+
+<script>
+function diagnose(){
+const car=document.getElementById("car").value;
+const problem=document.getElementById("problem").value.trim();
+const result=document.getElementById("result");
+if(!car || !problem){
+alert("لطفاً خودرو و مشکل آن را مشخص کنید.");
+return;
+}
+result.style.display="block";
+result.innerHTML=
+"خودرو: "+car+
+"<br>مشکل ثبت‌شده: "+problem+
+"<br><br>اطلاعات شما ثبت شد. برای تشخیص دقیق‌تر باید علائم، شرایط بروز مشکل و اطلاعات فنی خودرو بررسی شود."+
+"<br><br>⚠️ این نسخه اولیه است و هنوز به موتور هوش مصنوعی متصل نشده است.";
+}
+</script>
+</body>
+</html>
