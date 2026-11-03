@@ -1,127 +1,183 @@
-
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>مکانیک هوشمند احسان</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b1830">
+<title>EHSAN AUTO DOCTOR</title>
 <style>
 *{box-sizing:border-box}
-body{
-margin:0;
-font-family:Tahoma,Arial,sans-serif;
-background:#101b2b;
-color:white;
-}
-header{
-background:linear-gradient(135deg,#087e8b,#123c58);
-padding:25px 15px;
-text-align:center;
-}
-.logo{font-size:34px;font-weight:bold;color:#fff}
-header p{color:#d9f5f4}
-main{max-width:650px;margin:auto;padding:18px}
-.card{
-background:#1c2c40;
-padding:20px;
-border-radius:16px;
-margin:15px 0;
-border:1px solid #344b63;
-}
-h2{color:#36d6c4;font-size:19px}
-select,input,textarea,button{
-width:100%;
-padding:13px;
-margin:8px 0;
-border-radius:9px;
-border:1px solid #52677e;
-font-size:15px;
-}
-select,input,textarea{
-background:#101b2b;color:white;
-}
-button{
-background:#08a99d;
-color:white;
-border:0;
-font-weight:bold;
-cursor:pointer;
-}
-button:hover{background:#087e8b}
-#result{
-background:#102f39;
-padding:15px;
-border-radius:10px;
-line-height:2;
-display:none;
-}
-footer{text-align:center;padding:25px;color:#9eb4c7}
+body{margin:0;background:#0b1830;color:#edf5fb;font-family:Tahoma,Arial;line-height:1.9}
+header{text-align:center;padding:25px 12px;background:linear-gradient(120deg,#0b1830,#125064);border-bottom:2px solid #e5b85c}
+.logo{width:60px;height:60px;border:2px solid #e5b85c;border-radius:18px;margin:auto;color:#e5b85c;font-size:35px;font-weight:bold}
+h1{font-size:24px;margin:8px}
+header p{color:#b9d9df;font-size:13px}
+main{max-width:800px;margin:auto;padding:15px}
+h2{font-size:19px;color:#35d1c4;margin-top:25px}
+.card{background:#172d49;border:1px solid #29415f;border-radius:14px;padding:16px;margin:10px 0}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.grid .card{margin:0}
+.icon{font-size:25px}
+small{color:#b3c6d8}
+.notice{background:#3b3020;border-right:4px solid #e5b85c;padding:13px;border-radius:10px;font-size:13px}
+label{display:block;margin:10px 0 5px;color:#c6d6e4;font-size:13px}
+input,select,textarea{width:100%;padding:12px;border-radius:9px;border:1px solid #49627e;background:#0b1b30;color:white;font:inherit}
+button{background:#16b8ad;color:#06212a;border:0;border-radius:10px;padding:12px 18px;font-weight:bold;font-size:14px;margin-top:12px;cursor:pointer}
+.secondary{background:#29415f;color:white}
+.danger{background:#ffcf73;color:#382500}
+.result{display:none;background:#0a192c;border:1px solid #49627e;padding:14px;border-radius:10px;margin-top:12px;white-space:pre-wrap}
+footer{text-align:center;padding:25px;color:#91a8bb;font-size:12px}
+@media(max-width:500px){.grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <header>
-<div class="logo">EHSAN | احسان</div>
-<h2 style="color:white">مکانیک هوشمند خودرو</h2>
-<p>تشخیص هوشمند، تعمیر مطمئن، رانندگی بهتر</p>
+<div class="logo">ح</div>
+<h1>احسان اتو داکتر</h1>
+<p>EHSAN AUTO DOCTOR</p>
+<p>دستیار هوشمند عیب‌یابی و نگهداری خودرو</p>
 </header>
-
 <main>
+
+<div class="notice">
+⚠️ هشدار ایمنی: این برنامه راهنمای اولیه است و جایگزین تعمیرکار نیست. در صورت خرابی ترمز، فرمان، فشار روغن، داغ شدن موتور یا نشتی سوخت، در محل امن توقف کنید.
+</div>
+
+<h2>خدمات احسان اتو داکتر</h2>
+<div class="grid">
+<div class="card"><div class="icon">🔎</div><b>عیب‌یابی هوشمند</b><br><small>بررسی علائم و مشکلات خودرو</small></div>
+<div class="card"><div class="icon">🆘</div><b>امداد فوری احسان</b><br><small>راهنمای اقدامات ایمن اضطراری</small></div>
+<div class="card"><div class="icon">🧰</div><b>راهنمای تعمیر</b><br><small>آموزش نگهداری و تعمیرات</small></div>
+<div class="card"><div class="icon">🚘</div><b>بانک خودروها</b><br><small>داخلی، چینی و خارجی</small></div>
+</div>
+
+<h2>🔍 عیب‌یابی خودرو</h2>
 <div class="card">
-<h2>🚘 انتخاب خودرو</h2>
+<label>نوع خودرو</label>
 <select id="car">
-<option value="">خودرو را انتخاب کنید</option>
-<option>پژو 206</option>
-<option>پژو 207</option>
-<option>پژو 405</option>
+<option>پراید</option>
+<option>پژو ۲۰۶</option>
+<option>پژو ۲۰۷</option>
+<option>پژو ۴۰۵</option>
 <option>سمند</option>
 <option>دنا</option>
-<option>پراید</option>
 <option>تیبا</option>
 <option>ساینا</option>
 <option>کوییک</option>
-<option>پارس</option>
-<option>آریو</option>
-<option>سایر خودروها</option>
+<option>شاهین</option>
+<option>تارا</option>
+<option>خودروی چینی</option>
+<option>خودروی خارجی</option>
 </select>
+
+<label>مدل یا سال ساخت</label>
+<input id="year" placeholder="مثلاً ۱۳۹۶">
+
+<label>شرح مشکل خودرو</label>
+<textarea id="problem" rows="4" placeholder="مشکل خودرو را توضیح دهید..."></textarea>
+
+<button onclick="diagnose()">بررسی و عیب‌یابی</button>
+<button class="secondary" onclick="clearForm()">پاک کردن</button>
+<div id="answer" class="result"></div>
 </div>
 
+<h2>🆘 امداد فوری احسان</h2>
 <div class="card">
-<h2>🔧 عیب‌یابی خودرو</h2>
-<textarea id="problem" rows="4" placeholder="مشکل خودرو را توضیح دهید؛ مثلاً موتور لرزش دارد یا خودرو بد روشن می‌شود..."></textarea>
-<button onclick="diagnose()">بررسی مشکل خودرو</button>
-<div id="result"></div>
+<label>مشکل اضطراری چیست؟</label>
+<select id="emergency">
+<option value="brake">خرابی یا ضعف ترمز</option>
+<option value="oil">روشن شدن چراغ روغن</option>
+<option value="heat">جوش آوردن موتور</option>
+<option value="fuel">بوی بنزین یا نشتی سوخت</option>
+<option value="steer">خرابی فرمان</option>
+<option value="tire">پنچری لاستیک</option>
+<option value="battery">روشن نشدن خودرو</option>
+<option value="other">سایر مشکلات</option>
+</select>
+<button class="danger" onclick="help()">راهنمای امداد فوری</button>
+<div id="helpResult" class="result"></div>
 </div>
 
+<h2>🧰 چک‌لیست نگهداری خودرو</h2>
+<div class="grid">
+<div class="card">🛢️ <b>روغن موتور</b><br><small>بررسی سطح و زمان تعویض روغن</small></div>
+<div class="card">🌡️ <b>رادیاتور</b><br><small>بررسی سطح مایع خنک‌کننده در حالت سرد</small></div>
+<div class="card">🛞 <b>لاستیک‌ها</b><br><small>بررسی باد و سلامت لاستیک</small></div>
+<div class="card">🔋 <b>باتری</b><br><small>بررسی بست‌ها و سلامت باتری</small></div>
+</div>
+
+<h2>درباره پروژه</h2>
 <div class="card">
-<h2>🛠️ خدمات مکانیکی احسان</h2>
-<p>• راهنمای تعمیر موتور</p>
-<p>• بررسی گیربکس</p>
-<p>• سیستم برق و انژکتور</p>
-<p>• سیستم ترمز و تعلیق</p>
-<p>• راهنمای قطعات یدکی</p>
+احسان اتو داکتر یک پلتفرم تخصصی برای کمک به رانندگان در عیب‌یابی، نگهداری و تعمیر خودرو است.
+<br>
+شروع با خودروهای داخلی ایران، سپس توسعه خودروهای چینی و خارجی.
+<br><br>
+امکانات توسعه آینده:
+<ul>
+<li>هوش مصنوعی تخصصی مکانیک</li>
+<li>تصاویر و فیلم‌های آموزشی تعمیرات</li>
+<li>بانک اطلاعات قطعات خودرو</li>
+<li>اتصال به تعمیرکاران و امدادگران</li>
+<li>مشاوره و خدمات آنلاین</li>
+</ul>
 </div>
 </main>
 
 <footer>
-EHSAN AUTO AI<br>
-نسخه اولیه پلتفرم مکانیک هوشمند احسان
+EHSAN AUTO DOCTOR<br>
+احسان، همراه مطمئن رانندگان
 </footer>
 
 <script>
+function show(id,text){
+let e=document.getElementById(id);
+e.style.display="block";
+e.textContent=text;
+}
+
 function diagnose(){
-const car=document.getElementById("car").value;
-const problem=document.getElementById("problem").value.trim();
-const result=document.getElementById("result");
-if(!car || !problem){
-alert("لطفاً خودرو و مشکل آن را مشخص کنید.");
+let car=document.getElementById("car").value;
+let year=document.getElementById("year").value;
+let p=document.getElementById("problem").value.trim();
+
+if(!p){
+show("answer","لطفاً مشکل خودرو را بنویسید.");
 return;
 }
-result.style.display="block";
-result.innerHTML=
-"خودرو: "+car+
-"<br>مشکل ثبت‌شده: "+problem+
-"<br><br>اطلاعات شما ثبت شد. برای تشخیص دقیق‌تر باید علائم، شرایط بروز مشکل و اطلاعات فنی خودرو بررسی شود."+
-"<br><br>⚠️ این نسخه اولیه است و هنوز به موتور هوش مصنوعی متصل نشده است.";
+
+let result="خودرو: "+car+"\nمدل: "+year+"\nشرح مشکل: "+p+
+"\n\nبررسی اولیه:\n"+
+"۱. چراغ‌های هشدار پشت آمپر را بررسی کنید.\n"+
+"۲. زمان بروز مشکل را مشخص کنید.\n"+
+"۳. به صدا، بو، دود و نشتی توجه کنید.\n"+
+"۴. از بازکردن قطعات داغ و خطرناک خودداری کنید.\n\n"+
+"برای تشخیص دقیق‌تر، بازدید تعمیرکار و بررسی کدهای دیاگ لازم است.";
+
+if(/ترمز|فرمان|روغن|داغ|جوش|دود|بنزین|نشتی/.test(p)){
+result+="\n\n⚠️ احتمال وجود مشکل ایمنی وجود دارد. تا بررسی تخصصی رانندگی نکنید.";
+}
+show("answer",result);
+}
+
+function clearForm(){
+document.getElementById("problem").value="";
+document.getElementById("year").value="";
+document.getElementById("answer").style.display="none";
+}
+
+function help(){
+let v=document.getElementById("emergency").value;
+let messages={
+brake:"⛔ توقف فوری در محل امن. با ترمز معیوب رانندگی نکنید. از یدک‌کش کمک بگیرید.",
+oil:"⛔ موتور را خاموش کنید. ادامه کار با چراغ فشار روغن می‌تواند موتور را خراب کند.",
+heat:"⛔ توقف کنید و موتور را خاموش کنید. درِ رادیاتور داغ را باز نکنید. صبر کنید موتور کاملاً سرد شود.",
+fuel:"⛔ موتور را خاموش کنید. از سیگار و هر منبع جرقه دور شوید. خودرو را دوباره روشن نکنید.",
+steer:"⛔ با فرمان معیوب رانندگی نکنید. در محل امن توقف و از امداد کمک بگیرید.",
+tire:"در محل صاف و امن توقف کنید. اگر محل خطرناک است خودتان لاستیک را تعویض نکنید و امداد بخواهید.",
+battery:"اتصالات قابل مشاهده را بررسی کنید. در صورت دود، بوی سوختگی یا داغی کابل به آن دست نزنید.",
+other:"در صورت وجود هشدار قرمز، دود، نشتی یا صدای شدید، توقف کنید و از امداد کمک بگیرید."
+};
+show("helpResult",messages[v]);
 }
 </script>
 </body>
