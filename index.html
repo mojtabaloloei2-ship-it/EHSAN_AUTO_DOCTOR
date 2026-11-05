@@ -3,28 +3,32 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#071d2b">
 <title>EHSAN AUTO DOCTOR</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#071d2b;color:#fff;font-family:Tahoma,Arial,sans-serif}
-header{text-align:center;padding:28px 15px;background:linear-gradient(140deg,#073c50,#087e8b)}
-.logo{font-size:38px;font-weight:bold;color:#fff}
-header h1{font-size:23px;margin:12px 0}
-header p{color:#d6f5f3;font-size:13px}
-main{max-width:650px;margin:auto;padding:16px}
-.card{background:#102d3c;border:1px solid #244958;border-radius:15px;padding:17px;margin:14px 0}
-h2{font-size:17px;color:#50d6cf;margin-top:0}
-label{display:block;margin:12px 0 7px;font-size:13px}
-select,textarea,input{width:100%;padding:13px;border-radius:9px;border:1px solid #426477;background:#fff;color:#142a35;font-family:inherit;font-size:14px}
-textarea{height:105px;resize:vertical}
-button{width:100%;padding:14px;border:0;border-radius:9px;background:#08a6a5;color:white;font-family:inherit;font-size:15px;font-weight:bold;margin-top:13px}
-button:active{opacity:.8}
-.result{display:none;white-space:pre-line;line-height:2;font-size:14px}
-.warning{color:#ffb2a9}
-.safe{color:#7ee6a2}
-footer{text-align:center;color:#9bb6c1;font-size:11px;padding:25px}
+body{margin:0;background:#071d2b;color:white;font-family:Tahoma,Arial}
+header{text-align:center;padding:25px 12px;background:linear-gradient(135deg,#06465a,#087e8b)}
+.logo{font-size:38px;font-weight:bold;letter-spacing:3px}
+header h1{font-size:21px}
+header p{font-size:12px;color:#d4f5f2}
+main{max-width:650px;margin:auto;padding:15px}
+.intro{background:#102d3c;padding:17px;border-radius:14px;text-align:center;margin-bottom:16px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.menu{background:#123747;border:1px solid #286073;border-radius:14px;padding:19px 8px;text-align:center;cursor:pointer;min-height:115px}
+.menu:active{background:#087e8b}
+.menu .ico{font-size:29px}
+.menu b{display:block;font-size:13px;margin-top:12px}
+.panel{display:none;background:#102d3c;border:1px solid #286073;border-radius:14px;padding:17px;margin-top:18px}
+.panel h2{font-size:17px;color:#5ce0d4}
+label{display:block;font-size:13px;margin:13px 0 7px}
+select,input,textarea{width:100%;padding:12px;border-radius:8px;border:1px solid #66818d;background:#fff;color:#142a35;font-family:inherit;font-size:14px}
+textarea{height:90px}
+button.action{width:100%;padding:13px;background:#079e9d;color:white;border:0;border-radius:9px;font-family:inherit;font-size:14px;margin-top:12px}
+.result{display:none;white-space:pre-line;line-height:2;font-size:13px;background:#183f4b;padding:12px;border-radius:9px;margin-top:14px}
+.close{background:#345363!important}
+footer{text-align:center;padding:25px;color:#9bb6c1;font-size:11px}
 </style>
 </head>
 <body>
@@ -33,108 +37,181 @@ footer{text-align:center;color:#9bb6c1;font-size:11px;padding:25px}
 <h1>مکانیک هوشمند احسان</h1>
 <p>دستیار هوشمند عیب‌یابی و تعمیر خودرو</p>
 </header>
-
 <main>
-<section class="card">
+<div class="intro">
+<b>به EHSAN AUTO DOCTOR خوش آمدید</b>
+<p style="font-size:12px">خودرویتان را انتخاب کنید و مشکل را بررسی کنید.</p>
+</div>
+
+<div class="grid">
+<div class="menu" onclick="show('diagnosis')"><div class="ico">🔧</div><b>۱. عیب‌یابی هوشمند</b></div>
+<div class="menu" onclick="show('emergency')"><div class="ico">🚨</div><b>۲. امداد فوری احسان</b></div>
+<div class="menu" onclick="show('sound')"><div class="ico">🔊</div><b>۳. تشخیص صدای موتور</b></div>
+<div class="menu" onclick="show('photo')"><div class="ico">📷</div><b>۴. تشخیص با تصویر</b></div>
+<div class="menu" onclick="show('repair')"><div class="ico">⚙️</div><b>۵. آموزش تعمیرات</b></div>
+<div class="menu" onclick="show('database')"><div class="ico">📚</div><b>۶. بانک اطلاعات خودرو</b></div>
+</div>
+
+<section id="diagnosis" class="panel">
 <h2>🔧 عیب‌یابی خودرو</h2>
-<label>۱. نوع خودرو را انتخاب کنید</label>
+<label>انتخاب خودرو</label>
 <select id="car">
-<option value="">انتخاب خودرو</option>
-<option>پراید</option>
-<option>پژو 405</option>
-<option>پژو پارس</option>
-<option>پژو 206</option>
-<option>سمند</option>
-<option>دنا</option>
-<option>تیبا</option>
-<option>ساینا</option>
-<option>کوییک</option>
-<option>شاهین</option>
-<option>رانا</option>
-<option>تارا</option>
+<option value="">انتخاب کنید</option>
+<option>پراید</option><option>پژو 405</option>
+<option>پژو پارس</option><option>پژو 206</option>
+<option>سمند</option><option>دنا</option>
+<option>تیبا</option><option>ساینا</option>
+<option>کوییک</option><option>شاهین</option>
+<option>رانا</option><option>تارا</option>
 <option>سایر خودروها</option>
 </select>
-
-<label>۲. نوع مشکل</label>
+<label>نوع مشکل</label>
 <select id="problem">
-<option value="">انتخاب مشکل</option>
+<option value="">انتخاب کنید</option>
 <option value="start">روشن نشدن خودرو</option>
-<option value="engine">لرزش یا بد کار کردن موتور</option>
+<option value="engine">لرزش موتور</option>
 <option value="heat">بالا رفتن آمپر آب</option>
-<option value="oil">چراغ روغن روشن شده</option>
-<option value="brake">مشکل ترمز</option>
+<option value="oil">روشن شدن چراغ روغن</option>
+<option value="brake">خرابی ترمز</option>
 <option value="gear">مشکل گیربکس</option>
-<option value="battery">مشکل باتری و برق</option>
-<option value="smoke">دود غیرعادی اگزوز</option>
-<option value="other">سایر مشکلات</option>
+<option value="battery">مشکل برق و باتری</option>
+<option value="smoke">دود غیرعادی</option>
 </select>
-
-<label>۳. توضیح بیشتر درباره خرابی</label>
-<textarea id="details" placeholder="مثلاً خودرو استارت می‌خورد ولی روشن نمی‌شود..."></textarea>
-
-<button onclick="diagnose()">شروع عیب‌یابی</button>
+<label>شرح علائم خرابی</label>
+<textarea id="details" placeholder="علائم را توضیح دهید..."></textarea>
+<button class="action" onclick="diagnose()">شروع عیب‌یابی</button>
+<div id="diagnosisResult" class="result"></div>
 </section>
 
-<section class="card">
+<section id="emergency" class="panel">
 <h2>🚨 امداد فوری احسان</h2>
-<p style="font-size:13px;line-height:2">
-در صورت خرابی خودرو، ابتدا محل امنی پیدا کنید.
-در مشکلات خطرناک، ادامه رانندگی ممنوع است.
-</p>
-<button onclick="emergency()">بررسی وضعیت اضطراری</button>
+<p style="font-size:13px;line-height:2">مشکل خودرو را انتخاب کنید تا راهنمای ایمنی اولیه نمایش داده شود.</p>
+<select id="emergencyType">
+<option value="">انتخاب مشکل</option>
+<option value="oil">چراغ روغن</option>
+<option value="heat">جوش آوردن خودرو</option>
+<option value="brake">خرابی ترمز</option>
+<option value="tire">پنچری لاستیک</option>
+<option value="battery">خوابیدن باتری</option>
+</select>
+<button class="action" onclick="emergency()">بررسی وضعیت اضطراری</button>
 <div id="emergencyResult" class="result"></div>
 </section>
 
-<section class="card">
-<h2>📋 نتیجه عیب‌یابی</h2>
-<div id="result" class="result"></div>
+<section id="sound" class="panel">
+<h2>🔊 تشخیص صدای موتور</h2>
+<label>نوع صدای خودرو</label>
+<select id="soundType">
+<option value="">انتخاب کنید</option>
+<option>تق تق موتور</option>
+<option>سوت کشیدن</option>
+<option>صدای زوزه</option>
+<option>صدای کوبش</option>
+<option>صدای تسمه</option>
+<option>صدای غیرعادی گیربکس</option>
+</select>
+<label>توضیحات صدا</label>
+<textarea id="soundDetails" placeholder="چه زمانی صدا شنیده می‌شود؟"></textarea>
+<label>فایل صوتی (اختیاری)</label>
+<input type="file" accept="audio/*">
+<button class="action" onclick="soundCheck()">بررسی اولیه صدا</button>
+<div id="soundResult" class="result"></div>
+</section>
+
+<section id="photo" class="panel">
+<h2>📷 تشخیص با تصویر</h2>
+<p style="font-size:13px">تصویر قطعه یا محل خرابی را انتخاب کنید.</p>
+<input type="file" accept="image/*" capture="environment">
+<p style="font-size:12px;color:#b9d5df">تحلیل هوشمند تصویر در مرحله اتصال سامانه بینایی ماشین فعال خواهد شد.</p>
+</section>
+
+<section id="repair" class="panel">
+<h2>⚙️ آموزش تعمیرات</h2>
+<label>موضوع آموزش</label>
+<select id="repairType">
+<option>سیستم موتور</option>
+<option>سیستم ترمز</option>
+<option>سیستم برق خودرو</option>
+<option>گیربکس</option>
+<option>سیستم خنک‌کننده</option>
+<option>سیستم سوخت‌رسانی</option>
+</select>
+<button class="action" onclick="repairGuide()">نمایش راهنمای اولیه</button>
+<div id="repairResult" class="result"></div>
+</section>
+
+<section id="database" class="panel">
+<h2>📚 بانک اطلاعات فنی خودرو</h2>
+<label>انتخاب خودرو</label>
+<select id="databaseCar">
+<option>پراید</option><option>پژو 405</option>
+<option>پژو 206</option><option>پژو پارس</option>
+<option>سمند</option><option>دنا</option>
+<option>تیبا</option><option>ساینا</option>
+<option>کوییک</option><option>شاهین</option>
+</select>
+<button class="action" onclick="databaseGuide()">بررسی اطلاعات خودرو</button>
+<div id="databaseResult" class="result"></div>
 </section>
 </main>
-
 <footer>
 EHSAN AUTO DOCTOR<br>
-نسخه اولیه سامانه مکانیک هوشمند احسان
+ساخت و توسعه با برند احسان
 </footer>
 
 <script>
+function show(id){
+document.querySelectorAll('.panel').forEach(p=>p.style.display='none');
+document.getElementById(id).style.display='block';
+document.getElementById(id).scrollIntoView({behavior:'smooth'});
+}
+function result(id,text){
+let e=document.getElementById(id);
+e.style.display='block';
+e.textContent=text;
+}
 function diagnose(){
-const car=document.getElementById('car').value;
-const problem=document.getElementById('problem').value;
-const details=document.getElementById('details').value;
-const out=document.getElementById('result');
-
-if(!car || !problem){
-alert('لطفاً خودرو و نوع مشکل را انتخاب کنید.');
-return;
-}
-
-let answer={
-start:'علل احتمالی: باتری ضعیف، خرابی استارت، رله استارت یا سیستم سوخت‌رسانی.\nبررسی اولیه: چراغ‌های پشت آمپر و صدای استارت را بررسی کنید.',
-engine:'علل احتمالی: شمع، کوئل، انژکتور، نشتی هوا یا سنسورهای موتور.\nبررسی اولیه: صدای موتور و چراغ چک را بررسی کنید.',
-heat:'علل احتمالی: کمبود مایع خنک‌کننده، خرابی فن، ترموستات یا واترپمپ.\nهشدار: خودرو را متوقف کنید و اجازه دهید موتور خنک شود. درِ رادیاتور داغ را باز نکنید.',
-oil:'هشدار بسیار مهم: چراغ قرمز روغن می‌تواند نشانه افت فشار روغن باشد.\nفوراً موتور را خاموش کنید. تا بررسی سطح روغن و علت افت فشار، رانندگی نکنید.',
-brake:'هشدار ایمنی: خرابی ترمز بسیار خطرناک است.\nدر محل امن توقف کنید. اگر ترمز ضعیف شده یا نشتی وجود دارد، خودرو را رانندگی نکنید و از امداد استفاده کنید.',
-gear:'علل احتمالی: کمبود یا خرابی روغن گیربکس، ایراد برقی یا خرابی قطعات داخلی.\nاز گاز دادن شدید و ادامه رانندگی در صورت ضربه یا لغزش شدید خودداری کنید.',
-battery:'علل احتمالی: باتری ضعیف، دینام، اتصالات یا سیم‌کشی.\nاتصالات باتری را فقط در حالت خاموش و با رعایت ایمنی بررسی کنید.',
-smoke:'دود آبی می‌تواند با روغن‌سوزی، دود سفید با بخار یا ورود مایع خنک‌کننده و دود سیاه با احتراق ناقص مرتبط باشد.\nرنگ و مقدار دود و وضعیت آمپر آب را بررسی کنید.',
-other:'برای تشخیص دقیق‌تر به شرح علائم، صداها، چراغ‌های هشدار و شرایط وقوع خرابی نیاز داریم.'
+let car=document.getElementById('car').value;
+let p=document.getElementById('problem').value;
+let d=document.getElementById('details').value;
+if(!car||!p){alert('خودرو و مشکل را انتخاب کنید');return}
+let a={
+start:'باتری، استارت، رله و سیستم سوخت‌رسانی باید بررسی شوند.',
+engine:'شمع، کوئل، انژکتور، نشتی هوا و سنسورها بررسی شوند.',
+heat:'احتمال ایراد فن، ترموستات، واترپمپ یا کمبود مایع خنک‌کننده وجود دارد. موتور را خاموش کنید و درِ رادیاتور داغ را باز نکنید.',
+oil:'خطر افت فشار روغن وجود دارد. فوراً موتور را خاموش کنید و رانندگی نکنید.',
+brake:'خرابی ترمز خطرناک است. رانندگی نکنید و از امداد کمک بگیرید.',
+gear:'سطح و وضعیت روغن گیربکس و سیستم برقی و مکانیکی بررسی شود.',
+battery:'باتری، دینام، اتصالات و فیوزها بررسی شوند.',
+smoke:'رنگ دود، سطح روغن و مایع خنک‌کننده باید بررسی شوند.'
 };
-
-out.style.display='block';
-out.innerHTML='<b>خودرو: '+car+'</b>\n\n'+answer[problem]+'\n\nشرح شما: '+(details || 'توضیحی ثبت نشده است')+'\n\nتوجه: این نتیجه تشخیص قطعی نیست و باید با بررسی فنی تأیید شود.';
-out.scrollIntoView({behavior:'smooth'});
+result('diagnosisResult','خودرو: '+car+'\nنتیجه اولیه: '+a[p]+'\nشرح شما: '+d+'\n\nاین تشخیص قطعی نیست و نیازمند بررسی فنی است.');
 }
-
 function emergency(){
-const p=document.getElementById('problem').value;
-const out=document.getElementById('emergencyResult');
-out.style.display='block';
-
-if(p==='brake'||p==='oil'||p==='heat'){
-out.innerHTML='<span class="warning">⛔ وضعیت خطرناک\n\nدر محل امن توقف کنید و موتور را در صورت لزوم خاموش کنید. رانندگی را ادامه ندهید. از امداد یا تعمیرکار کمک بگیرید.</span>';
-}else{
-out.innerHTML='<span class="safe">ابتدا خودرو را در محل امن متوقف کنید. وضعیت ظاهری و چراغ‌های هشدار را بررسی کنید. اگر نشانه خطر جدی وجود دارد، رانندگی نکنید.</span>';
+let p=document.getElementById('emergencyType').value;
+let a={
+oil:'توقف در محل امن و خاموش کردن موتور. تا مشخص شدن علت افت فشار روغن رانندگی نکنید.',
+heat:'در محل امن توقف کنید و موتور را خاموش کنید. درِ رادیاتور داغ را باز نکنید.',
+brake:'رانندگی نکنید. در صورت نقص ترمز از امداد و حمل خودرو استفاده کنید.',
+tire:'در محل صاف و امن توقف کنید. چراغ خطر را روشن کنید و از فاصله ایمن از ترافیک کار کنید.',
+battery:'از اتصال اشتباه قطب‌ها و ایجاد جرقه خودداری کنید. در صورت نداشتن مهارت از امداد کمک بگیرید.'
+};
+if(!p){alert('مشکل را انتخاب کنید');return}
+result('emergencyResult','راهنمای ایمنی:\n'+a[p]);
 }
+function soundCheck(){
+let s=document.getElementById('soundType').value;
+let d=document.getElementById('soundDetails').value;
+if(!s){alert('نوع صدا را انتخاب کنید');return}
+result('soundResult','صدای انتخاب‌شده: '+s+'\nتوضیحات: '+d+'\n\nبرای تشخیص دقیق، بررسی مکانیکی لازم است. فایل صوتی در این نسخه هنوز تحلیل نمی‌شود.');
+}
+function repairGuide(){
+let t=document.getElementById('repairType').value;
+result('repairResult','موضوع انتخابی: '+t+'\n\nبرای ارائه دستورالعمل دقیق باید مدل، سال ساخت و نوع موتور خودرو مشخص شود. تعمیرات خطرناک باید توسط متخصص انجام شوند.');
+}
+function databaseGuide(){
+let c=document.getElementById('databaseCar').value;
+result('databaseResult','خودرو انتخابی: '+c+'\n\nپرونده اطلاعات فنی این خودرو در مرحله توسعه بانک اطلاعاتی تکمیل خواهد شد.');
 }
 </script>
 </body>
