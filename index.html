@@ -189,7 +189,43 @@ let e=document.getElementById(id);
 e.style.display='block';
 e.textContent=text;
 }
+
 function speakResult(id){
+const e=document.getElementById(id);
+
+if(!e || !e.textContent.trim()){
+alert('ابتدا نتیجه را نمایش دهید');
+return;
+}
+
+if(!window.speechSynthesis || !window.SpeechSynthesisUtterance){
+alert('پخش گفتار در این مرورگر پشتیبانی نمی‌شود');
+return;
+}
+
+const synth=window.speechSynthesis;
+synth.cancel();
+
+const msg=new SpeechSynthesisUtterance(e.textContent.trim());
+msg.lang='fa-IR';
+msg.rate=0.85;
+msg.volume=1;
+msg.pitch=1;
+
+const voices=synth.getVoices();
+const faVoice=voices.find(v=>v.lang && v.lang.toLowerCase().startsWith('fa'));
+
+if(faVoice){
+msg.voice=faVoice;
+}
+
+msg.onerror=function(event){
+alert('خطا در پخش صدا: '+event.error);
+};
+
+synth.speak(msg);
+}
+
 let e=document.getElementById(id);
 if(!e.textContent){alert('ابتدا نتیجه را نمایش دهید');return}
 if(!('speechSynthesis' in window)){alert('پخش گفتار در این مرورگر پشتیبانی نمی‌شود');return}
