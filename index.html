@@ -225,16 +225,6 @@ alert('خطا در پخش صدا: '+event.error);
 
 synth.speak(msg);
 }
-
-let e=document.getElementById(id);
-if(!e.textContent){alert('ابتدا نتیجه را نمایش دهید');return}
-if(!('speechSynthesis' in window)){alert('پخش گفتار در این مرورگر پشتیبانی نمی‌شود');return}
-speechSynthesis.cancel();
-let msg=new SpeechSynthesisUtterance(e.textContent);
-msg.lang='fa-IR';
-msg.rate=0.9;
-speechSynthesis.speak(msg);
-}
 function voiceInput(){
 const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
 if(!SpeechRecognition){alert('ورودی صوتی در این مرورگر پشتیبانی نمی‌شود. می‌توانید متن را تایپ کنید.');return}
