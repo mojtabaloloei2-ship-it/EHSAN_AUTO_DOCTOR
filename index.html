@@ -14,21 +14,24 @@ header{text-align:center;padding:25px 12px;background:linear-gradient(135deg,#06
 header h1{font-size:21px}
 header p{font-size:12px;color:#d4f5f2}
 main{max-width:650px;margin:auto;padding:15px}
-.intro{background:#102d3c;padding:17px;border-radius:14px;text-align:center;margin-bottom:16px}
+.intro,.panel{background:#102d3c;padding:17px;border-radius:14px}
+.intro{text-align:center;margin-bottom:16px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .menu{background:#123747;border:1px solid #286073;border-radius:14px;padding:19px 8px;text-align:center;cursor:pointer;min-height:115px}
 .menu:active{background:#087e8b}
-.menu .ico{font-size:29px}
+.ico{font-size:29px}
 .menu b{display:block;font-size:13px;margin-top:12px}
-.panel{display:none;background:#102d3c;border:1px solid #286073;border-radius:14px;padding:17px;margin-top:18px}
+.panel{display:none;border:1px solid #286073;margin-top:18px}
 .panel h2{font-size:17px;color:#5ce0d4}
 label{display:block;font-size:13px;margin:13px 0 7px}
 select,input,textarea{width:100%;padding:12px;border-radius:8px;border:1px solid #66818d;background:#fff;color:#142a35;font-family:inherit;font-size:14px}
 textarea{height:90px}
 button.action{width:100%;padding:13px;background:#079e9d;color:white;border:0;border-radius:9px;font-family:inherit;font-size:14px;margin-top:12px}
+button.secondary{background:#345363}
 .result{display:none;white-space:pre-line;line-height:2;font-size:13px;background:#183f4b;padding:12px;border-radius:9px;margin-top:14px}
-.close{background:#345363!important}
+.preview{max-width:100%;max-height:260px;display:none;margin:12px auto;border-radius:10px}
 footer{text-align:center;padding:25px;color:#9bb6c1;font-size:11px}
+.notice{font-size:11px;color:#ffd98a;line-height:2}
 </style>
 </head>
 <body>
@@ -42,7 +45,6 @@ footer{text-align:center;padding:25px;color:#9bb6c1;font-size:11px}
 <b>به EHSAN AUTO DOCTOR خوش آمدید</b>
 <p style="font-size:12px">خودرویتان را انتخاب کنید و مشکل را بررسی کنید.</p>
 </div>
-
 <div class="grid">
 <div class="menu" onclick="show('diagnosis')"><div class="ico">🔧</div><b>۱. عیب‌یابی هوشمند</b></div>
 <div class="menu" onclick="show('emergency')"><div class="ico">🚨</div><b>۲. امداد فوری احسان</b></div>
@@ -57,13 +59,25 @@ footer{text-align:center;padding:25px;color:#9bb6c1;font-size:11px}
 <label>انتخاب خودرو</label>
 <select id="car">
 <option value="">انتخاب کنید</option>
-<option>پراید</option><option>پژو 405</option>
-<option>پژو پارس</option><option>پژو 206</option>
-<option>سمند</option><option>دنا</option>
-<option>تیبا</option><option>ساینا</option>
-<option>کوییک</option><option>شاهین</option>
-<option>رانا</option><option>تارا</option>
-<option>سایر خودروها</option>
+<optgroup label="خودروهای ایرانی">
+<option>پراید</option><option>پژو 405</option><option>پژو پارس</option>
+<option>پژو 206</option><option>سمند</option><option>دنا</option>
+<option>تیبا</option><option>ساینا</option><option>کوییک</option>
+<option>شاهین</option><option>رانا</option><option>تارا</option>
+<option>آریو زوتی</option>
+</optgroup>
+<optgroup label="خودروهای چینی">
+<option>ام وی ام 315</option><option>ام وی ام X22</option>
+<option>ام وی ام X33</option><option>چری تیگو 7</option>
+<option>جک J4</option><option>جک S5</option><option>لیفان X60</option>
+<option>هایما S7</option><option>فونیکس FX</option>
+<option>فیدلیتی</option><option>دیگنیتی</option><option>لاماری ایما</option>
+</optgroup>
+<optgroup label="خودروهای خارجی">
+<option>تویوتا کرولا</option><option>هیوندای النترا</option>
+<option>کیا سراتو</option><option>نیسان</option><option>رنو</option>
+<option>میتسوبیشی</option><option>سایر خودروها</option>
+</optgroup>
 </select>
 <label>نوع مشکل</label>
 <select id="problem">
@@ -79,8 +93,10 @@ footer{text-align:center;padding:25px;color:#9bb6c1;font-size:11px}
 </select>
 <label>شرح علائم خرابی</label>
 <textarea id="details" placeholder="علائم را توضیح دهید..."></textarea>
+<button class="action secondary" onclick="voiceInput()">🎙️ گفتن علائم با میکروفون</button>
 <button class="action" onclick="diagnose()">شروع عیب‌یابی</button>
 <div id="diagnosisResult" class="result"></div>
+<button class="action secondary" onclick="speakResult('diagnosisResult')">🔊 خواندن نتیجه با صدا</button>
 </section>
 
 <section id="emergency" class="panel">
@@ -88,70 +104,73 @@ footer{text-align:center;padding:25px;color:#9bb6c1;font-size:11px}
 <p style="font-size:13px;line-height:2">مشکل خودرو را انتخاب کنید تا راهنمای ایمنی اولیه نمایش داده شود.</p>
 <select id="emergencyType">
 <option value="">انتخاب مشکل</option>
-<option value="oil">چراغ روغن</option>
-<option value="heat">جوش آوردن خودرو</option>
-<option value="brake">خرابی ترمز</option>
-<option value="tire">پنچری لاستیک</option>
+<option value="oil">چراغ روغن</option><option value="heat">جوش آوردن خودرو</option>
+<option value="brake">خرابی ترمز</option><option value="tire">پنچری لاستیک</option>
 <option value="battery">خوابیدن باتری</option>
 </select>
 <button class="action" onclick="emergency()">بررسی وضعیت اضطراری</button>
 <div id="emergencyResult" class="result"></div>
+<button class="action secondary" onclick="speakResult('emergencyResult')">🔊 پخش راهنمای صوتی</button>
 </section>
 
 <section id="sound" class="panel">
-<h2>🔊 تشخیص صدای موتور</h2>
+<h2>🔊 بررسی صدای موتور</h2>
 <label>نوع صدای خودرو</label>
 <select id="soundType">
 <option value="">انتخاب کنید</option>
-<option>تق تق موتور</option>
-<option>سوت کشیدن</option>
-<option>صدای زوزه</option>
-<option>صدای کوبش</option>
-<option>صدای تسمه</option>
-<option>صدای غیرعادی گیربکس</option>
+<option>تق تق موتور</option><option>سوت کشیدن</option>
+<option>صدای زوزه</option><option>صدای کوبش</option>
+<option>صدای تسمه</option><option>صدای غیرعادی گیربکس</option>
 </select>
 <label>توضیحات صدا</label>
 <textarea id="soundDetails" placeholder="چه زمانی صدا شنیده می‌شود؟"></textarea>
-<label>فایل صوتی (اختیاری)</label>
-<input type="file" accept="audio/*">
+<label>انتخاب فایل صوتی</label>
+<input id="audioFile" type="file" accept="audio/*" onchange="previewAudio()">
+<audio id="audioPreview" controls style="display:none;width:100%;margin-top:12px"></audio>
 <button class="action" onclick="soundCheck()">بررسی اولیه صدا</button>
 <div id="soundResult" class="result"></div>
+<button class="action secondary" onclick="speakResult('soundResult')">🔊 خواندن نتیجه</button>
+<p class="notice">در این نسخه فایل صوتی فقط قابل پخش است و تحلیل خودکار صدا هنوز فعال نیست.</p>
 </section>
 
 <section id="photo" class="panel">
-<h2>📷 تشخیص با تصویر</h2>
-<p style="font-size:13px">تصویر قطعه یا محل خرابی را انتخاب کنید.</p>
-<input type="file" accept="image/*" capture="environment">
-<p style="font-size:12px;color:#b9d5df">تحلیل هوشمند تصویر در مرحله اتصال سامانه بینایی ماشین فعال خواهد شد.</p>
+<h2>📷 بررسی تصویری خودرو</h2>
+<p style="font-size:13px">از قطعه یا محل خرابی عکس انتخاب کنید.</p>
+<input id="photoFile" type="file" accept="image/*" capture="environment" onchange="previewPhoto()">
+<img id="photoPreview" class="preview" alt="پیش‌نمایش تصویر انتخاب‌شده">
+<div id="photoResult" class="result"></div>
+<p class="notice">این نسخه تصویر را نمایش می‌دهد؛ تشخیص خودکار قطعه و خرابی به اتصال سامانه بینایی ماشین نیاز دارد.</p>
 </section>
 
 <section id="repair" class="panel">
 <h2>⚙️ آموزش تعمیرات</h2>
 <label>موضوع آموزش</label>
 <select id="repairType">
-<option>سیستم موتور</option>
-<option>سیستم ترمز</option>
-<option>سیستم برق خودرو</option>
-<option>گیربکس</option>
-<option>سیستم خنک‌کننده</option>
-<option>سیستم سوخت‌رسانی</option>
+<option>سیستم موتور</option><option>سیستم ترمز</option>
+<option>سیستم برق خودرو</option><option>گیربکس</option>
+<option>سیستم خنک‌کننده</option><option>سیستم سوخت‌رسانی</option>
 </select>
 <button class="action" onclick="repairGuide()">نمایش راهنمای اولیه</button>
 <div id="repairResult" class="result"></div>
+<button class="action secondary" onclick="speakResult('repairResult')">🔊 خواندن آموزش</button>
 </section>
 
 <section id="database" class="panel">
 <h2>📚 بانک اطلاعات فنی خودرو</h2>
 <label>انتخاب خودرو</label>
 <select id="databaseCar">
-<option>پراید</option><option>پژو 405</option>
-<option>پژو 206</option><option>پژو پارس</option>
-<option>سمند</option><option>دنا</option>
-<option>تیبا</option><option>ساینا</option>
-<option>کوییک</option><option>شاهین</option>
+<option>پراید</option><option>پژو 405</option><option>پژو 206</option>
+<option>پژو پارس</option><option>سمند</option><option>دنا</option>
+<option>تیبا</option><option>ساینا</option><option>کوییک</option>
+<option>شاهین</option><option>آریو زوتی</option>
+<option>ام وی ام X22</option><option>ام وی ام X33</option>
+<option>جک J4</option><option>جک S5</option><option>هایما S7</option>
+<option>تویوتا کرولا</option><option>هیوندای النترا</option>
+<option>کیا سراتو</option><option>سایر خودروها</option>
 </select>
 <button class="action" onclick="databaseGuide()">بررسی اطلاعات خودرو</button>
 <div id="databaseResult" class="result"></div>
+<button class="action secondary" onclick="speakResult('databaseResult')">🔊 خواندن اطلاعات</button>
 </section>
 </main>
 <footer>
@@ -169,6 +188,27 @@ function result(id,text){
 let e=document.getElementById(id);
 e.style.display='block';
 e.textContent=text;
+}
+function speakResult(id){
+let e=document.getElementById(id);
+if(!e.textContent){alert('ابتدا نتیجه را نمایش دهید');return}
+if(!('speechSynthesis' in window)){alert('پخش گفتار در این مرورگر پشتیبانی نمی‌شود');return}
+speechSynthesis.cancel();
+let msg=new SpeechSynthesisUtterance(e.textContent);
+msg.lang='fa-IR';
+msg.rate=0.9;
+speechSynthesis.speak(msg);
+}
+function voiceInput(){
+const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+if(!SpeechRecognition){alert('ورودی صوتی در این مرورگر پشتیبانی نمی‌شود. می‌توانید متن را تایپ کنید.');return}
+let rec=new SpeechRecognition();
+rec.lang='fa-IR';
+rec.onresult=e=>{
+document.getElementById('details').value=e.results[0][0].transcript;
+};
+rec.onerror=()=>alert('دریافت صدا انجام نشد. اجازه میکروفون را بررسی کنید.');
+rec.start();
 }
 function diagnose(){
 let car=document.getElementById('car').value;
@@ -190,7 +230,7 @@ result('diagnosisResult','خودرو: '+car+'\nنتیجه اولیه: '+a[p]+'\n
 function emergency(){
 let p=document.getElementById('emergencyType').value;
 let a={
-oil:'توقف در محل امن و خاموش کردن موتور. تا مشخص شدن علت افت فشار روغن رانندگی نکنید.',
+oil:'در محل امن توقف و موتور را خاموش کنید. تا مشخص شدن علت افت فشار روغن رانندگی نکنید.',
 heat:'در محل امن توقف کنید و موتور را خاموش کنید. درِ رادیاتور داغ را باز نکنید.',
 brake:'رانندگی نکنید. در صورت نقص ترمز از امداد و حمل خودرو استفاده کنید.',
 tire:'در محل صاف و امن توقف کنید. چراغ خطر را روشن کنید و از فاصله ایمن از ترافیک کار کنید.',
@@ -203,7 +243,17 @@ function soundCheck(){
 let s=document.getElementById('soundType').value;
 let d=document.getElementById('soundDetails').value;
 if(!s){alert('نوع صدا را انتخاب کنید');return}
-result('soundResult','صدای انتخاب‌شده: '+s+'\nتوضیحات: '+d+'\n\nبرای تشخیص دقیق، بررسی مکانیکی لازم است. فایل صوتی در این نسخه هنوز تحلیل نمی‌شود.');
+result('soundResult','صدای انتخاب‌شده: '+s+'\nتوضیحات: '+d+'\n\nبرای تشخیص دقیق، بررسی مکانیکی لازم است. فایل صوتی در این نسخه تحلیل خودکار نمی‌شود.');
+}
+function previewAudio(){
+let f=document.getElementById('audioFile').files[0];
+let a=document.getElementById('audioPreview');
+if(f){a.src=URL.createObjectURL(f);a.style.display='block'}
+}
+function previewPhoto(){
+let f=document.getElementById('photoFile').files[0];
+let img=document.getElementById('photoPreview');
+if(f){img.src=URL.createObjectURL(f);img.style.display='block';result('photoResult','تصویر انتخاب شد. برای تشخیص قطعی، بررسی متخصص لازم است. تحلیل خودکار تصویر هنوز فعال نیست.')}
 }
 function repairGuide(){
 let t=document.getElementById('repairType').value;
