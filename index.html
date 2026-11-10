@@ -342,8 +342,15 @@ filterCars();
   card.className = "service-card";
   card.textContent = "🔌 دیاگ هوشمند احسان";
   card.addEventListener("click", function () {
-    if (typeof showPanel === "function") showPanel("obd");
-    else document.getElementById("obd").scrollIntoView({behavior:"smooth"});
+   
+const obdPanel = document.getElementById("obd");
+if (obdPanel) {
+  document.querySelectorAll(".panel").forEach(p => {
+    p.style.display = "none";
+  });
+  obdPanel.style.display = "block";
+  obdPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+}         
   });
   grid.appendChild(card);
 
