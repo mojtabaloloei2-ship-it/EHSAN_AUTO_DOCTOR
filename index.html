@@ -303,6 +303,172 @@ function filterCars(){
  document.getElementById("carList").innerHTML=found.length?found.map(c=>"<div class='step'><b>"+c[0]+"</b><p>"+c[1]+"</p></div>").join(""):"<p class='muted'>خودرویی پیدا نشد.</p>";
 }
 filterCars();
+  
+// ===== EHSAN SMART OBD2 DIAGNOSTIC =====
+(function () {
+  const obdCodes = [
+    ["P0100","مدار سنسور جریان هوای ورودی (MAF)","بررسی سنسور، سوکت و سیم‌کشی","متوسط"],
+    ["P0101","عملکرد نامناسب سنسور MAF","بررسی فیلتر هوا و مسیر ورودی هوا","متوسط"],
+    ["P0115","مدار سنسور دمای آب موتور","بررسی سوکت و سنسور دما","زیاد"],
+    ["P0128","دمای موتور پایین‌تر از حد استاندارد","بررسی ترموستات و سنسور دما","متوسط"],
+    ["P0130","اختلال مدار سنسور اکسیژن","بررسی سیم‌کشی و سنسور اکسیژن","متوسط"],
+    ["P0171","مخلوط سوخت و هوا بیش از حد رقیق","بررسی نشتی هوا و فشار سوخت","متوسط"],
+    ["P0172","مخلوط سوخت و هوا بیش از حد غنی","بررسی انژکتور و سنسورها","متوسط"],
+    ["P0300","احتراق ناقص تصادفی یا چندسیلندری","بررسی شمع، کوئل و سوخت‌رسانی","زیاد"],
+    ["P0301","احتراق ناقص سیلندر شماره ۱","بررسی شمع و کوئل سیلندر ۱","زیاد"],
+    ["P0325","اختلال مدار سنسور ضربه","بررسی سنسور ناک و سیم‌کشی","متوسط"],
+    ["P0335","اختلال سنسور موقعیت میل‌لنگ","بررسی سنسور دور موتور و اتصالات","زیاد"],
+    ["P0340","اختلال سنسور موقعیت میل‌بادامک","بررسی سنسور و سیم‌کشی","زیاد"],
+    ["P0401","جریان ناکافی سیستم EGR","بررسی مسیر و شیر EGR","متوسط"],
+    ["P0420","بازده پایین کاتالیزور","بررسی کاتالیزور و سنسورهای اکسیژن","متوسط"],
+    ["P0442","نشتی کوچک سیستم بخارات سوخت","بررسی درِ باک و شیلنگ‌ها","کم"],
+    ["P0500","اختلال سنسور سرعت خودرو","بررسی سنسور سرعت و سیم‌کشی","زیاد"],
+    ["P0505","اختلال کنترل دور آرام موتور","بررسی دریچه گاز و سیستم دور آرام","متوسط"],
+    ["P0562","ولتاژ پایین سیستم خودرو","بررسی باتری و دینام","زیاد"],
+    ["P0700","ثبت خطا در سیستم کنترل گیربکس","بررسی گیربکس با دستگاه سازگار","زیاد"],
+    ["P0705","اختلال سنسور وضعیت دنده","بررسی فشنگی دنده و اتصالات","زیاد"],
+    ["P0715","اختلال سنسور دور ورودی گیربکس","بررسی سنسور و سیم‌کشی گیربکس","زیاد"],
+    ["P0720","اختلال سنسور دور خروجی گیربکس","بررسی سنسور سرعت خروجی","زیاد"],
+    ["P0740","اختلال مدار کلاچ مبدل گشتاور","بررسی سیستم کنترل گیربکس","زیاد"]
+  ];
+
+  const grid = document.querySelector(".grid");
+  const main = document.querySelector("main");
+
+  if (!grid || !main || document.getElementById("obd")) return;
+
+  const card = document.createElement("button");
+  card.type = "button";
+  card.className = "service-card";
+  card.textContent = "🔌 دیاگ هوشمند احسان";
+  card.addEventListener("click", function () {
+    if (typeof showPanel === "function") showPanel("obd");
+    else document.getElementById("obd").scrollIntoView({behavior:"smooth"});
+  });
+  grid.appendChild(card);
+
+  const panel = document.createElement("section");
+  panel.id = "obd";
+  panel.className = "panel card";
+  panel.innerHTML = `
+    <h2>🔌 دیاگ هوشمند احسان</h2>
+    <p>کد خطای OBD2 را وارد کنید تا معنی و راهنمای اولیه آن نمایش داده شود.</p>
+
+    <label for="obdInput">کد خطا</label>
+    <input id="obdInput" type="text" maxlength="5"
+      placeholder="مثلاً P0300" style="text-transform:uppercase">
+
+    <button type="button" id="obdSearch">جستجوی کد خطا</button>
+    <div id="obdResult" class="notice" style="margin-top:15px">
+      هنوز کدی جستجو نشده است.
+    </div>
+
+    <hr>
+    <h3>🧪 شبیه‌ساز دیاگ</h3>
+    <p>برای آزمایش عملکرد بخش دیاگ، یکی از خطاهای نمونه را انتخاب کنید.</p>
+    <select id="obdDemo">
+      <option value="">انتخاب خطای آزمایشی</option>
+      <option value="P0300">P0300 - احتراق ناقص</option>
+      <option value="P0420">P0420 - کاتالیزور</option>
+      <option value="P0562">P0562 - ولتاژ پایین</option>
+      <option value="P0700">P0700 - سیستم گیربکس</option>
+    </select>
+    <button type="button" id="obdTest">اجرای شبیه‌سازی</button>
+    <div id="obdDemoResult" class="notice" style="margin-top:12px">
+      شبیه‌ساز آماده است.
+    </div>
+
+    <hr>
+    <h3>📚 بانک کدهای خطای موجود</h3>
+    <input id="obdFilter" type="search" placeholder="جستجو در کدها...">
+    <div id="obdList"></div>
+
+    <hr>
+    <div class="notice">
+      ⚠️ این نسخه فقط کدهای واردشده یا نمونه را بررسی می‌کند و به ECU خودرو متصل نیست.
+      معنی کد به‌تنهایی تشخیص قطعی خرابی نیست. اتصال واقعی به دستگاه OBD2 در نسخه آینده اضافه خواهد شد.
+    </div>
+    <div class="notice">
+      هشدار ایمنی: در صورت لرزش شدید موتور، چراغ چشمک‌زن چک، داغ‌شدن موتور،
+      افت فشار روغن یا اختلال ترمز، رانندگی را متوقف کنید و از تعمیرکار کمک بگیرید.
+    </div>
+  `;
+
+  const mechanics = document.getElementById("mechanics");
+  if (mechanics) mechanics.insertAdjacentElement("afterend", panel);
+  else main.appendChild(panel);
+
+  if (Array.isArray(window.panels) && !window.panels.includes("obd")) {
+    window.panels.push("obd");
+  }
+
+  function showCode(code, target) {
+    const item = obdCodes.find(x => x[0] === code);
+    if (!item) {
+      target.textContent = "این کد در بانک فعلی ثبت نشده است. کد را بررسی کنید.";
+      return;
+    }
+
+    target.innerHTML = "";
+    const heading = document.createElement("h3");
+    heading.textContent = item[0] + " — " + item[1];
+    const cause = document.createElement("p");
+    cause.textContent = "بررسی‌های پیشنهادی: " + item[2];
+    const level = document.createElement("p");
+    level.textContent = "سطح هشدار اولیه: " + item[3];
+    const note = document.createElement("p");
+    note.textContent = "این نتیجه راهنمای اولیه است؛ برای تشخیص قطعی، اطلاعات خودرو و بررسی تعمیرکار لازم است.";
+    target.append(heading, cause, level, note);
+  }
+
+  const input = document.getElementById("obdInput");
+  const result = document.getElementById("obdResult");
+
+  document.getElementById("obdSearch").addEventListener("click", function () {
+    const code = input.value.trim().toUpperCase();
+    if (!/^P[0-9A-F]{4}$/.test(code)) {
+      result.textContent = "لطفاً یک کد معتبر مانند P0300 وارد کنید.";
+      return;
+    }
+    showCode(code, result);
+  });
+
+  document.getElementById("obdTest").addEventListener("click", function () {
+    const code = document.getElementById("obdDemo").value;
+    const demo = document.getElementById("obdDemoResult");
+    if (!code) {
+      demo.textContent = "ابتدا یک خطای آزمایشی انتخاب کنید.";
+      return;
+    }
+    demo.textContent = "نتیجه شبیه‌سازی نمونه (نه اطلاعات واقعی خودرو): " + code;
+    showCode(code, demo);
+  });
+
+  const list = document.getElementById("obdList");
+  const filter = document.getElementById("obdFilter");
+
+  function renderList() {
+    const term = filter.value.trim().toUpperCase();
+    list.innerHTML = "";
+    obdCodes.filter(x => x.join(" ").toUpperCase().includes(term))
+      .forEach(item => {
+        const row = document.createElement("button");
+        row.type = "button";
+        row.className = "btn";
+        row.style.margin = "5px";
+        row.textContent = item[0] + " — " + item[1];
+        row.addEventListener("click", function () {
+          input.value = item[0];
+          showCode(item[0], result);
+        });
+        list.appendChild(row);
+      });
+  }
+
+  filter.addEventListener("input", renderList);
+  renderList();
+})();
+// ===== END EHSAN SMART OBD2 =====
 </script>
 </body>
      </html>
