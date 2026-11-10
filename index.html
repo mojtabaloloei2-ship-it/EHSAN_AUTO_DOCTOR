@@ -383,7 +383,63 @@ filterCars();
   card.addEventListener("click", function () {
    
 const obdPanel = document.getElementById("obd");
-if (obdPanel) {
+if (!obdPanel) {
+  const panel = document.createElement("section");
+  panel.id = "obd";
+  panel.className = "panel";
+  panel.style.display = "none";
+
+  panel.innerHTML = `
+    <h2>🔌 دیاگ هوشمند احسان</h2>
+    <p>کد خطای خودرو را وارد کنید:</p>
+
+    <input
+      id="obdCode"
+      type="text"
+      placeholder="مثلاً P0100"
+      style="width:100%;padding:14px;border-radius:10px;"
+    >
+
+    <button id="obdSearch" type="button">
+      بررسی کد خطا
+    </button>
+
+    <div id="obdResult"></div>
+  `;
+
+  document.querySelector("main").appendChild(panel);
+}
+
+const obdSearch = document.getElementById("obdSearch");
+
+if (obdSearch) {
+  obdSearch.addEventListener("click", function () {
+    const code = document.getElementById("obdCode").value.trim().toUpperCase();
+    const result = document.getElementById("obdResult");
+
+    if (!code) {
+      result.innerHTML = "لطفاً کد خطا را وارد کنید.";
+      return;
+    }
+
+    const found = typeof errorCodes !== "undefined"
+      ? errorCodes.find(item => item[0] === code)
+      : null;
+
+    if (found) {
+      result.innerHTML = `
+        <h3>نتیجه دیاگ احسان</h3>
+        <p>کد خطا: ${found[0]}</p>
+        <p>شرح: ${found[1]}</p>
+        <p>روش بررسی: ${found[2]}</p>
+        <p>شدت خطا: ${found[3]}</p>
+      `;
+    } else {
+      result.innerHTML = "این کد در بانک اطلاعاتی فعلی ثبت نشده است.";
+    }
+  });
+}
+
   document.querySelectorAll(".panel").forEach(p => {
     p.style.display = "none";
   });
