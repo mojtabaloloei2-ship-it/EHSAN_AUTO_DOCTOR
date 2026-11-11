@@ -489,11 +489,583 @@ filterCars();
 
   filter.addEventListener("input", renderList);
   renderList();
-
-  console.log("EHSAN SMART OBD2 READY");
-})();
-// ===== END EHSAN SMART OBD2 =====
   
+  // ===== EHSAN OBD2 HISTORY =====
+  const historyKey = "ehsan_obd_history_v1";
+
+  function getObdHistory() {
+    try {
+      return JSON.parse(localStorage.getItem(historyKey) || "[]");
+    } catch (e) {
+      return [];
+    }
+  }
+
+  const historyBox = document.createElement("section");
+  historyBox.className = "notice";
+  historyBox.style.marginTop = "15px";
+
+  const historyTitle = document.createElement("h3");
+  historyTitle.textContent = "📚 سوابق عیب‌یابی احسان";
+
+  const historyList = document.createElement("div");
+  const clearButton = document.createElement("button");
+  clearButton.type = "button";
+  clearButton.textContent = "🗑️ پاک کردن سوابق";
+
+  historyBox.append(historyTitle, historyList, clearButton);
+  panel.appendChild(historyBox);
+
+  function renderObdHistory() {
+    const records = getObdHistory();
+    historyList.innerHTML = "";
+
+    if (!records.length) {
+      historyList.textContent = "هنوز سابقه‌ای ثبت نشده است.";
+      return;
+    }
+
+    records.forEach(function (record) {
+      const row = document.createElement("p");
+      row.textContent = record.code + " — " +
+        record.name + " | " + record.date;
+      historyList.appendChild(row);
+    });
+  }
+
+  function saveObdHistory(code) {
+    const item = obdCodes.find(x => x[0] === code);
+    if (!item) return;
+
+    try {
+      const records = getObdHistory();
+
+      records.unshift({
+        code: item[0],
+        name: item[1],
+        date: new Date().toLocaleString("fa-IR")
+      });
+
+      localStorage.setItem(
+        historyKey,
+        JSON.stringify(records.slice(0, 50))
+      );
+
+      renderObdHistory();
+    } catch (e) {
+      console.warn("History save failed", e);
+    }
+  }
+
+  clearButton.addEventListener("click", function () {
+    if (!confirm("سوابق عیب‌یابی پاک شوند؟")) return;
+    localStorage.removeItem(historyKey);
+    renderObdHistory();
+  });
+
+  const oldShowCode = showCode;
+
+  showCode = function (code, target) {
+    oldShowCode(code, target);
+    saveObdHistory(code);
+  };
+
+  renderObdHistory();
+
+
+  // ===== EHSAN OBD2 HISTORY =====
+  const historyKey = "ehsan_obd_history_v1";
+
+  function getObdHistory() {
+    try {
+      return JSON.parse(localStorage.getItem(historyKey) || "[]");
+    } catch (e) {
+      return [];
+    }
+  }
+
+  const historyBox = document.createElement("section");
+  historyBox.className = "notice";
+  historyBox.style.marginTop = "15px";
+
+  const historyTitle = document.createElement("h3");
+  historyTitle.textContent = "📚 سوابق عیب‌یابی احسان";
+
+  const historyList = document.createElement("div");
+  const clearButton = document.createElement("button");
+  clearButton.type = "button";
+  clearButton.textContent = "🗑️ پاک کردن سوابق";
+
+  historyBox.append(historyTitle, historyList, clearButton);
+  panel.appendChild(historyBox);
+
+  function renderObdHistory() {
+    const records = getObdHistory();
+    historyList.innerHTML = "";
+
+    if (!records.length) {
+      historyList.textContent = "هنوز سابقه‌ای ثبت نشده است.";
+      return;
+    }
+
+    records.forEach(function (record) {
+      const row = document.createElement("p");
+      row.textContent = record.code + " — " +
+        record.name + " | " + record.date;
+      historyList.appendChild(row);
+    });
+  }
+
+  function saveObdHistory(code) {
+    const item = obdCodes.find(x => x[0] === code);
+    if (!item) return;
+
+    try {
+      const records = getObdHistory();
+
+      records.unshift({
+        code: item[0],
+        name: item[1],
+        date: new Date().toLocaleString("fa-IR")
+      });
+
+      localStorage.setItem(
+        historyKey,
+        JSON.stringify(records.slice(0, 50))
+      );
+
+      renderObdHistory();
+    } catch (e) {
+      console.warn("History save failed", e);
+    }
+  }
+
+  clearButton.addEventListener("click", function () {
+    if (!confirm("سوابق عیب‌یابی پاک شوند؟")) return;
+    localStorage.removeItem(historyKey);
+    renderObdHistory();
+  });
+
+  const oldShowCode = showCode;
+
+  showCode = function (code, target) {
+    oldShowCode(code, target);
+    saveObdHistory(code);
+  };
+
+  renderObdHistory();
+  // ===== END EHSAN OBD2 HISTORY =====
+
+JavaScript
+
+  // ===== EHSAN OBD2 HISTORY =====
+  const historyKey = "ehsan_obd_history_v1";
+
+  function getObdHistory() {
+    try {
+      return JSON.parse(localStorage.getItem(historyKey) || "[]");
+    } catch (e) {
+      return [];
+    }
+  }
+
+  const historyBox = document.createElement("section");
+  historyBox.className = "notice";
+  historyBox.style.marginTop = "15px";
+
+  const historyTitle = document.createElement("h3");
+  historyTitle.textContent = "📚 سوابق عیب‌یابی احسان";
+
+  const historyList = document.createElement("div");
+  const clearButton = document.createElement("button");
+  clearButton.type = "button";
+  clearButton.textContent = "🗑️ پاک کردن سوابق";
+
+  historyBox.append(historyTitle, historyList, clearButton);
+  panel.appendChild(historyBox);
+
+  function renderObdHistory() {
+    const records = getObdHistory();
+    historyList.innerHTML = "";
+
+    if (!records.length) {
+      historyList.textContent = "هنوز سابقه‌ای ثبت نشده است.";
+      return;
+    }
+
+    records.forEach(function (record) {
+      const row = document.createElement("p");
+      row.textContent = record.code + " — " +
+        record.name + " | " + record.date;
+      historyList.appendChild(row);
+    });
+  }
+
+  function saveObdHistory(code) {
+    const item = obdCodes.find(x => x[0] === code);
+    if (!item) return;
+
+    try {
+      const records = getObdHistory();
+
+      records.unshift({
+        code: item[0],
+        name: item[1],
+        date: new Date().toLocaleString("fa-IR")
+      });
+
+      localStorage.setItem(
+        historyKey,
+        JSON.stringify(records.slice(0, 50))
+      );
+
+      renderObdHistory();
+    } catch (e) {
+      console.warn("History save failed", e);
+    }
+  }
+
+  clearButton.addEventListener("click", function () {
+    if (!confirm("سوابق عیب‌یابی پاک شوند؟")) return;
+    localStorage.removeItem(historyKey);
+    renderObdHistory();
+  });
+
+  const oldShowCode = showCode;
+
+  showCode = function (code, target) {
+    oldShowCode(code, target);
+    saveObdHistory(code);
+  };
+
+  renderObdHistory();
+  // ===== END EHSAN OBD2 HISTORY =====
+JavaScript
+
+  // ===== EHSAN OBD2 HISTORY =====
+  const historyKey = "ehsan_obd_history_v1";
+
+  function getObdHistory() {
+    try {
+      return JSON.parse(localStorage.getItem(historyKey) || "[]");
+    } catch (e) {
+      return [];
+    }
+  }
+
+  const historyBox = document.createElement("section");
+  historyBox.className = "notice";
+  historyBox.style.marginTop = "15px";
+
+  const historyTitle = document.createElement("h3");
+  historyTitle.textContent = "📚 سوابق عیب‌یابی احسان";
+
+  const historyList = document.createElement("div");
+  const clearButton = document.createElement("button");
+  clearButton.type = "button";
+  clearButton.textContent = "🗑️ پاک کردن سوابق";
+
+  historyBox.append(historyTitle, historyList, clearButton);
+  panel.appendChild(historyBox);
+
+  function renderObdHistory() {
+    const records = getObdHistory();
+    historyList.innerHTML = "";
+
+    if (!records.length) {
+      historyList.textContent = "هنوز سابقه‌ای ثبت نشده است.";
+      return;
+    }
+
+    records.forEach(function (record) {
+      const row = document.createElement("p");
+      row.textContent = record.code + " — " +
+        record.name + " | " + record.date;
+      historyList.appendChild(row);
+    });
+  }
+
+  function saveObdHistory(code) {
+    const item = obdCodes.find(x => x[0] === code);
+    if (!item) return;
+
+    try {
+      const records = getObdHistory();
+
+      records.unshift({
+        code: item[0],
+        name: item[1],
+        date: new Date().toLocaleString("fa-IR")
+      });
+
+      localStorage.setItem(
+        historyKey,
+        JSON.stringify(records.slice(0, 50))
+      );
+
+      renderObdHistory();
+    } catch (e) {
+      console.warn("History save failed", e);
+    }
+  }
+
+  clearButton.addEventListener("click", function () {
+    if (!confirm("سوابق عیب‌یابی پاک شوند؟")) return;
+    localStorage.removeItem(historyKey);
+    renderObdHistory();
+  });
+
+  const oldShowCode = showCode;
+
+  showCode = function (code, target) {
+    oldShowCode(code, target);
+    saveObdHistory(code);
+  };
+
+  renderObdHistory();
+  
+  // ===== EHSAN OBD2 HISTORY =====
+  const historyKey = "ehsan_obd_history_v1";
+
+  function getObdHistory() {
+    try {
+      return JSON.parse(localStorage.getItem(historyKey) || "[]");
+    } catch (e) {
+      return [];
+    }
+  }
+
+  const historyBox = document.createElement("section");
+  historyBox.className = "notice";
+  historyBox.style.marginTop = "15px";
+
+  const historyTitle = document.createElement("h3");
+  historyTitle.textContent = "📚 سوابق عیب‌یابی احسان";
+
+  const historyList = document.createElement("div");
+  const clearButton = document.createElement("button");
+  clearButton.type = "button";
+  clearButton.textContent = "🗑️ پاک کردن سوابق";
+
+  historyBox.append(historyTitle, historyList, clearButton);
+  panel.appendChild(historyBox);
+
+  function renderObdHistory() {
+    const records = getObdHistory();
+    historyList.innerHTML = "";
+
+    if (!records.length) {
+      historyList.textContent = "هنوز سابقه‌ای ثبت نشده است.";
+      return;
+    }
+
+    records.forEach(function (record) {
+      const row = document.createElement("p");
+      row.textContent = record.code + " — " +
+        record.name + " | " + record.date;
+      historyList.appendChild(row);
+    });
+  }
+
+  function saveObdHistory(code) {
+    const item = obdCodes.find(x => x[0] === code);
+    if (!item) return;
+
+    try {
+      const records = getObdHistory();
+
+      records.unshift({
+        code: item[0],
+        name: item[1],
+        date: new Date().toLocaleString("fa-IR")
+      });
+
+      localStorage.setItem(
+        historyKey,
+        JSON.stringify(records.slice(0, 50))
+      );
+
+      renderObdHistory();
+    } catch (e) {
+      console.warn("History save failed", e);
+    }
+  }
+
+  clearButton.addEventListener("click", function () {
+    if (!confirm("سوابق عیب‌یابی پاک شوند؟")) return;
+    localStorage.removeItem(historyKey);
+    renderObdHistory();
+  });
+
+  const oldShowCode = showCode;
+
+  showCode = function (code, target) {
+    oldShowCode(code, target);
+    saveObdHistory(code);
+  };
+
+  renderObdHistory();
+  // ===== END EHSAN OBD2 HISTORY =====
+
+  // ===== EHSAN OBD2 HISTORY =====
+  const historyKey = "ehsan_obd_history_v1";
+
+  function getObdHistory() {
+    try {
+      return JSON.parse(localStorage.getItem(historyKey) || "[]");
+    } catch (e) {
+      return [];
+    }
+  }
+
+  const historyBox = document.createElement("section");
+  historyBox.className = "notice";
+  historyBox.style.marginTop = "15px";
+
+  const historyTitle = document.createElement("h3");
+  historyTitle.textContent = "📚 سوابق عیب‌یابی احسان";
+
+  const historyList = document.createElement("div");
+  const clearButton = document.createElement("button");
+  clearButton.type = "button";
+  clearButton.textContent = "🗑️ پاک کردن سوابق";
+
+  historyBox.append(historyTitle, historyList, clearButton);
+  panel.appendChild(historyBox);
+
+  function renderObdHistory() {
+    const records = getObdHistory();
+    historyList.innerHTML = "";
+
+    if (!records.length) {
+      historyList.textContent = "هنوز سابقه‌ای ثبت نشده است.";
+      return;
+    }
+
+    records.forEach(function (record) {
+      const row = document.createElement("p");
+      row.textContent = record.code + " — " +
+        record.name + " | " + record.date;
+      historyList.appendChild(row);
+    });
+  }
+
+  function saveObdHistory(code) {
+    const item = obdCodes.find(x => x[0] === code);
+    if (!item) return;
+
+    try {
+      const records = getObdHistory();
+
+      records.unshift({
+        code: item[0],
+        name: item[1],
+        date: new Date().toLocaleString("fa-IR")
+      });
+
+      localStorage.setItem(
+        historyKey,
+        JSON.stringify(records.slice(0, 50))
+      );
+
+      renderObdHistory();
+    } catch (e) {
+      console.warn("History save failed", e);
+    }
+  }
+
+  clearButton.addEventListener("click", function () {
+    if (!confirm("سوابق عیب‌یابی پاک شوند؟")) return;
+    localStorage.removeItem(historyKey);
+    renderObdHistory();
+  });
+
+  const oldShowCode = showCode;
+
+  showCode = function (code, target) {
+    oldShowCode(code, target);
+    saveObdHistory(code);
+  };
+
+  renderObdHistory();
+  
+// ===== EHSAN OBD2 HISTORY =====
+const historyKey = "ehsan_obd_history_v1";
+
+function getObdHistory() {
+  try {
+    return JSON.parse(localStorage.getItem(historyKey) || "[]");
+  } catch (e) {
+    return [];
+  }
+}
+const historyBox = document.createElement("section");
+historyBox.className = "notice";
+historyBox.style.marginTop = "15px";
+
+const historyTitle = document.createElement("h3");
+historyTitle.textContent = "📚 سوابق عیب‌یابی احسان";
+
+const historyList = document.createElement("div");
+const clearButton = document.createElement("button");
+clearButton.type = "button";
+clearButton.textContent = "🗑️ پاک کردن سوابق";
+
+historyBox.append(historyTitle, historyList, clearButton);
+panel.appendChild(historyBox);function renderObdHistory() {
+  const records = getObdHistory();
+  historyList.innerHTML = "";
+
+  if (!records.length) {
+    historyList.textContent = "هنوز سابقه‌ای ثبت نشده است.";
+    return;
+  }
+
+  records.forEach(function (record) {
+    const row = document.createElement("p");
+    row.textContent = record.code + " — " +
+      record.name + " | " + record.date;
+    historyList.appendChild(row);
+  });
+}
+  function saveObdHistory(code) {
+  const item = obdCodes.find(x => x[0] === code);
+  if (!item) return;
+
+  try {
+    const records = getObdHistory();
+
+    records.unshift({
+      code: item[0],
+      name: item[1],
+      date: new Date().toLocaleString("fa-IR")
+    });
+
+    localStorage.setItem(
+      historyKey,
+      JSON.stringify(records.slice(0, 50))
+    );
+
+    renderObdHistory();
+  } catch (e) {
+    console.warn("History save failed", e);
+  }
+                                           }.log("EHSAN SMART OBD2 READY");
+})();clearButton.addEventListener("click", function () {
+  if (!confirm("سوابق عیب‌یابی پاک شوند؟")) return;
+  localStorage.removeItem(historyKey);
+  renderObdHistory();
+});
+
+const oldShowCode = showCode;
+
+showCode = function (code, target) {
+  oldShowCode(code, target);
+  saveObdHistory(code);
+};
+
+renderObdHistory();
+// ===== END EHSAN OBD2 HISTORY =====
 
 </script>
 </body>
