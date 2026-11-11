@@ -32,1041 +32,206 @@ textarea{min-height:90px;resize:vertical}
 footer{text-align:center;color:var(--muted);font-size:11px;padding:18px}
 .hidden{display:none!important}
 @media(max-width:560px){.grid{grid-template-columns:1fr}.action{min-height:78px}header{padding-top:18px}}
-/* ===== EHSAN AUTO DOCTOR - PREMIUM DESIGN ===== */
+       
+    
+  // ===== EHSAN SMART OBD2 - CLEAN VERSION =====
+  (function () {
+    "use strict";
 
-:root {
-  --navy: #071a32;
-  --navy2: #102b4b;
-  --turquoise: #11d3cf;
-  --gold: #efc66f;
-  --light-bg: #f1f6fb;
-}
+    const main = document.querySelector("main");
+    const grid = document.querySelector(".grid");
 
-body {
-  background: linear-gradient(145deg, #f1f6fb, #e5eef7) !important;
-  color: var(--navy);
-}
+    if (!main || document.getElementById("obd")) return;
 
-header, .header, .topbar {
-  background: linear-gradient(120deg, #071a32, #12385c) !important;
-  color: white !important;
-  border-bottom: 3px solid var(--turquoise);
-  box-shadow: 0 8px 25px rgba(7, 26, 50, .2);
-  border-radius: 0 0 22px 22px;
-}
+    const obdCodes = [
+      ["P0100", "مدار سنسور جریان هوای ورودی MAF", "بررسی سنسور، سوکت و سیم‌کشی", "متوسط"],
+      ["P0101", "عملکرد نامناسب سنسور MAF", "بررسی فیلتر هوا و مسیر ورودی هوا", "متوسط"],
+      ["P0115", "مدار سنسور دمای آب موتور", "بررسی سوکت و سیم‌کشی سنسور", "زیاد"],
+      ["P0118", "سیگنال بالای سنسور دمای آب", "بررسی اتصالات و سنسور دما", "زیاد"],
+      ["P0300", "احتراق ناقص تصادفی موتور", "بررسی شمع، کوئل، انژکتور و سوخت", "زیاد"],
+      ["P0420", "بازده پایین کاتالیزور", "بررسی کاتالیزور و سنسور اکسیژن", "متوسط"],
+      ["P0562", "ولتاژ پایین سیستم خودرو", "بررسی باتری، دینام و اتصالات", "زیاد"],
+      ["P0700", "خطای سیستم کنترل گیربکس", "بررسی دیاگ اختصاصی گیربکس", "زیاد"]
+    ];
 
-h1, h2, h3 {
-  color: var(--navy);
-  font-weight: 800;
-}
+    const card = document.createElement("button");
+    card.type = "button";
+    card.className = "service-card";
+    card.textContent = "🔌 دیاگ هوشمند احسان";
 
-header h1, .header h1, .topbar h1 {
-  color: white !important;
-}
+    if (grid) grid.appendChild(card);
+    else main.appendChild(card);
 
-button, .btn {
-  background: linear-gradient(120deg, #087f91, #11bfc1) !important;
-  color: white !important;
-  border: 0 !important;
-  border-radius: 14px !important;
-  padding: 12px 18px;
-  font-weight: 700;
-  box-shadow: 0 5px 13px rgba(8, 127, 145, .2);
-  transition: transform .2s ease, box-shadow .2s ease;
-}
+    const panel = document.createElement("section");
+    panel.id = "obd";
+    panel.className = "panel card";
+    panel.style.display = "none";
 
-button:active, .btn:active {
-  transform: scale(.97);
-}
+    panel.innerHTML = `
+      <h2>🔌 دیاگ هوشمند احسان</h2>
+      <p>کد خطای خودرو را وارد کنید.</p>
+      <input id="obdInput" maxlength="5" placeholder="مثلاً P0100"
+        style="width:100%;padding:13px;border-radius:10px;">
+      <button type="button" id="obdSearch">🔍 بررسی کد خطا</button>
+      <div id="obdResult" class="notice" style="margin-top:15px">
+        آماده بررسی کد خطا
+      </div>
+      <hr>
+      <h3>🧪 شبیه‌ساز دیاگ</h3>
+      <select id="obdDemo" style="width:100%;padding:12px">
+        <option value="">انتخاب خطای آزمایشی</option>
+        <option value="P0300">P0300 - احتراق ناقص</option>
+        <option value="P0420">P0420 - کاتالیزور</option>
+        <option value="P0562">P0562 - ولتاژ پایین</option>
+        <option value="P0700">P0700 - گیربکس</option>
+      </select>
+      <button type="button" id="obdTest">اجرای شبیه‌سازی</button>
+      <div id="obdDemoResult" class="notice"></div>
+      <hr>
+      <h3>📚 بانک کدهای خطا</h3>
+      <input id="obdFilter" type="search"
+        placeholder="جستجو در بانک کدها..."
+        style="width:100%;padding:12px">
+      <div id="obdList"></div>
+      <hr>
+      <h3>📚 سوابق عیب‌یابی احسان</h3>
+      <div id="obdHistory"></div>
+      <button type="button" id="obdClear">🗑️ پاک کردن سوابق</button>
+      <div class="notice">
+        ⚠️ این نسخه شبیه‌ساز نرم‌افزاری است و به ECU متصل نیست.
+      </div>
+      <div class="notice">
+        هشدار ایمنی: در صورت اختلال ترمز، افت فشار روغن یا داغ‌شدن موتور،
+        رانندگی را متوقف کنید.
+      </div>
+    `;
 
-.card, .service-card, .panel, .box, .section {
-  border-radius: 19px !important;
-  border: 1px solid #dce8f1 !important;
-  box-shadow: 0 7px 22px rgba(16, 43, 75, .08);
-}
+    const mechanics = document.getElementById("mechanics");
+    if (mechanics) mechanics.insertAdjacentElement("afterend", panel);
+    else main.appendChild(panel);
 
-input, select, textarea {
-  border: 1px solid #cbdce9 !important;
-  border-radius: 12px !important;
-  padding: 12px !important;
-  background: #fff !important;
-}
-
-button:hover, .btn:hover {
-  box-shadow: 0 8px 20px rgba(17, 191, 193, .3);
-}
-
-small, .small {
-  color: #668096;
-}
-
-hr {
-  border-color: #dce8f1;
-}
-
-/* ===== END PREMIUM DESIGN ===== */</style>
-</head>
-<body>
-<header>
-  <div class="brand">EHSAN <span>AUTO DOCTOR</span></div>
-  <p>مکانیک هوشمند احسان | راهنمای نگهداری و عیب‌یابی خودرو</p>
-</header>
-<main>
-  <div class="notice"><b>توجه ایمنی:</b> این نسخه راهنمای اولیه و آموزشی است، نه جایگزین تعمیرکار یا دستگاه دیاگ. در نقص ترمز، فشار روغن، داغ‌شدن موتور، بوی بنزین یا دود، رانندگی را متوقف کنید و از امداد کمک بگیرید.</div>
-
-  <section class="grid" aria-label="بخش‌های برنامه">
-    <button class="action" onclick="showPanel('diagnosis')"><span class="ico">🔧</span><span><b>عیب‌یابی هوشمند</b><small>بررسی اولیه نشانه‌های خودرو</small></span></button>
-    <button class="action" onclick="showPanel('voice')"><span class="ico">🎙️</span><span><b>تشخیص صوتی</b><small>ثبت صدا یا گفتن علائم</small></span></button>
-    <button class="action" onclick="showPanel('image')"><span class="ico">📷</span><span><b>تشخیص تصویری</b><small>بارگذاری عکس برای بررسی ظاهری</small></span></button>
-    <button class="action" onclick="showPanel('garage')"><span class="ico">🚘</span><span><b>بانک خودرو</b><small>اطلاعات پایه خودروها</small></span></button>
-    <button class="action" onclick="showPanel('guide')"><span class="ico">🧰</span><span><b>تعمیر مرحله‌به‌مرحله</b><small>راهنمای بررسی‌های کم‌خطر</small></span></button>
-    <button class="action" onclick="showPanel('emergency')"><span class="ico">🆘</span><span><b>امداد فوری احسان</b><small>ارزیابی فوریت و اقدام ایمن</small></span></button>
-    <button class="action" onclick="showPanel('training')"><span class="ico">🎓</span><span><b>آموزش نگهداری</b><small>نکات کاربردی و پیشگیرانه</small></span></button>
-    <button class="action" onclick="showPanel('mechanics')"><span class="ico">👨‍🔧</span><span><b>تعمیرکاران</b><small>آماده توسعه فهرست مراکز معتبر</small></span></button>
-  </section>
-
-  <section id="diagnosis" class="panel card">
-    <h2>عیب‌یابی اولیه خودرو</h2>
-    <label for="car">نوع خودرو</label>
-    <select id="car"><option>پژو ۲۰۶</option><option>پژو ۴۰۵</option><option>سمند</option><option>پراید</option><option>تیبا</option><option>دنا</option><option>تارا</option><option>آریو / زوتی</option><option>خودروی دیگر</option></select>
-    <label for="symptom">مهم‌ترین علامت</label>
-    <select id="symptom">
-      <option value="start">روشن نمی‌شود</option><option value="overheat">آمپر آب بالا می‌رود یا موتور داغ می‌کند</option>
-      <option value="brake">ترمز ضعیف شده یا صدای غیرعادی دارد</option><option value="oil">چراغ فشار روغن روشن شده</option>
-      <option value="noise">صدای غیرعادی از موتور یا خودرو</option><option value="power">شتاب یا قدرت خودرو کم شده</option>
-      <option value="smoke">دود غیرعادی از اگزوز</option><option value="vibration">لرزش خودرو</option><option value="fuel">بوی بنزین یا نشتی سوخت</option>
-    </select>
-    <label for="details">توضیحات بیشتر (اختیاری)</label><textarea id="details" placeholder="مثلاً هنگام سربالایی، در حالت سرد یا بعد از گرم شدن..."></textarea>
-    <button class="btn" onclick="diagnose()">بررسی علائم</button>
-    <div id="diagnosisResult" class="result hidden" aria-live="polite"></div>
-  </section>
-
-  <section id="voice" class="panel card">
-    <h2>ثبت صوت و گفتن علائم</h2>
-    <p class="muted">تشخیص خودکار صدای موتور در این نسخه فعال نیست؛ می‌توانید علائم را با گفتار به متن تبدیل کنید یا فایل صوتی را انتخاب کنید.</p>
-    <button class="btn" onclick="startSpeech()">🎙️ شروع گفتار به متن</button>
-    <button class="btn secondary" onclick="readText('علائم خودرو را با جزئیات بیان کنید؛ زمان بروز صدا و وضعیت موتور را هم بگویید.')">🔊 راهنمای صوتی</button>
-    <label for="voiceText">متن علائم</label><textarea id="voiceText" placeholder="علائم خودرو را اینجا بنویسید یا با میکروفن بیان کنید..."></textarea>
-    <label for="audioFile">انتخاب فایل صوتی</label><input id="audioFile" type="file" accept="audio/*">
-    <div id="audioInfo" class="muted"></div>
-  </section>
-
-  <section id="image" class="panel card">
-    <h2>بررسی تصویری اولیه</h2>
-    <p class="muted">عکس برای مشاهده و ثبت در همین صفحه نمایش داده می‌شود. تحلیل هوشمند تصویر تا زمان اتصال سرویس تخصصی فعال نیست.</p>
-    <label for="imageFile">انتخاب عکس خودرو یا قطعه</label><input id="imageFile" type="file" accept="image/*">
-    <div id="imagePreview" class="result hidden"></div>
-  </section>
-
-  <section id="garage" class="panel card">
-    <h2>بانک خودرو</h2>
-    <label for="carSearch">جست‌وجوی خودرو</label><input id="carSearch" placeholder="نام خودرو را وارد کنید..." oninput="filterCars()">
-    <div id="carList"></div>
-  </section>
-
-  <section id="guide" class="panel card">
-    <h2>راهنمای بررسی مرحله‌ای</h2>
-    <p class="muted">فقط بررسی‌های ظاهری و کم‌خطر. اگر موردی نیازمند ابزار یا بازکردن قطعه است، کار را به تعمیرکار بسپارید.</p>
-    <label for="guideProblem">موضوع راهنما</label>
-    <select id="guideProblem"><option value="battery">خودرو روشن نمی‌شود</option><option value="tire">بررسی ظاهری لاستیک</option><option value="coolant">بررسی سطح مایع خنک‌کننده در موتور کاملاً سرد</option></select>
-    <button class="btn" onclick="startGuide()">شروع راهنما</button>
-    <div id="guideBox"></div>
-  </section>
-
-  <section id="emergency" class="panel card">
-    <h2>امداد فوری احسان</h2>
-    <label for="urgent">چه اتفاقی افتاده است؟</label>
-    <select id="urgent"><option value="brake">خرابی یا ضعف ترمز</option><option value="oil">چراغ فشار روغن روشن است</option><option value="heat">موتور بیش از حد داغ شده</option><option value="fuel">بوی بنزین یا نشتی سوخت</option><option value="smoke">دود یا بوی سوختگی</option><option value="flat">پنچری لاستیک</option><option value="other">مورد دیگر</option></select>
-    <button class="btn red" onclick="emergencyCheck()">ارزیابی وضعیت</button>
-    <div id="emergencyResult" class="result hidden"></div>
-  </section>
-
-  <section id="training" class="panel card">
-    <h2>آموزش نگهداری خودرو</h2>
-    <div class="step"><b>بازدید دوره‌ای روغن موتور</b><p>سطح روغن را طبق دفترچه خودرو و روی سطح صاف، با موتور خاموش و پس از زمان کافی برای ته‌نشینی بررسی کنید. اگر چراغ فشار روغن روشن است، ادامه رانندگی نکنید.</p></div>
-    <div class="step"><b>بازدید لاستیک‌ها</b><p>فشار باد را در حالت سرد و مطابق برچسب خودرو تنظیم کنید. ترک، برآمدگی یا آسیب دیواره نیازمند بررسی متخصص است.</p></div>
-    <div class="step"><b>مایع خنک‌کننده</b><p>فقط وقتی موتور کاملاً سرد است سطح مخزن را بررسی کنید. هرگز درپوش رادیاتور یا مخزن داغ را باز نکنید.</p></div>
-  </section>
-
-  <section id="mechanics" class="panel card">
-    <h2>تعمیرکاران</h2>
-    <p>این بخش برای افزودن تعمیرکاران تأییدشده در شهرها آماده شده است. در نسخه فعلی فهرست محلی یا شماره تماس تأییدشده‌ای ثبت نشده است.</p>
-  </section>
-</main>
-<footer>© EHSAN AUTO DOCTOR — نسخه آزمایشی وب‌اپ</footer>
-
-<script>
-"use strict";
-const panels = ["diagnosis","voice","image","garage","guide","emergency","training","mechanics"];
-function showPanel(id){
-  panels.forEach(function(p){const el=document.getElementById(p);if(el)el.classList.toggle("active",p===id);});
-  const target=document.getElementById(id);if(target)target.scrollIntoView({behavior:"smooth",block:"start"});
-}
-function setResult(id,html,level){
-  const el=document.getElementById(id);if(!el)return;
-  el.className="result "+(level||"");el.innerHTML=html;el.classList.remove("hidden");
-}
-function diagnose(){
-  const s=document.getElementById("symptom").value;
-  const car=document.getElementById("car").value;
-  const detail=document.getElementById("details").value.trim();
-  const data={
-    start:["warn","علت‌های احتمالی: باتری ضعیف، اتصالات باتری، استارت یا سیستم سوخت‌رسانی. ابتدا چراغ‌های پشت آمپر و وضعیت ظاهری سرباتری را بررسی کنید. از اتصال‌دادن سیم‌ها یا دستکاری برق خودرو خودداری کنید."],
-    overheat:["danger","خطر داغ‌شدن موتور: در محل امن توقف کنید و موتور را خاموش کنید. درپوش رادیاتور یا مخزن داغ را باز نکنید و روی موتور داغ آب نریزید. پس از خنک‌شدن، برای بررسی نشتی و فن از تعمیرکار یا امداد کمک بگیرید."],
-    brake:["danger","نقص ترمز خطر جانی دارد. رانندگی را ادامه ندهید. خودرو را در محل امن متوقف کنید و با امداد یا یدک‌کش تماس بگیرید؛ سیستم ترمز را خودتان باز نکنید."],
-    oil:["danger","روشن‌شدن چراغ فشار روغن می‌تواند به موتور آسیب جدی بزند. فوراً در محل امن توقف و موتور را خاموش کنید. تا بررسی سطح روغن و علت توسط متخصص، موتور را دوباره روشن نکنید."],
-    noise:["warn","صدای غیرعادی می‌تواند از تسمه‌ها، قطعات متحرک، چرخ‌ها یا اجزای تعلیق باشد. محل و زمان صدا را ثبت کنید. اگر صدا شدید است یا با چراغ هشدار، لرزش یا افت قدرت همراه است، توقف و بررسی تخصصی لازم است."],
-    power:["warn","کاهش قدرت ممکن است به فیلتر هوا، سوخت‌رسانی، جرقه یا حالت حفاظتی موتور مربوط باشد. چراغ‌های هشدار را یادداشت کنید و از گازدادن شدید خودداری کنید. برای تشخیص قطعی، دیاگ و بررسی تعمیرکار لازم است."],
-    smoke:["warn","رنگ دود و شرایط بروز آن مهم است. اگر دود غلیظ، بوی سوختگی یا نشانه آتش وجود دارد، در محل امن توقف کنید، موتور را خاموش کنید و فاصله بگیرید. بررسی تخصصی لازم است."],
-    vibration:["warn","لرزش ممکن است از لاستیک، بالانس، دسته‌موتور یا احتراق باشد. اگر لرزش شدید است یا فرمان و ترمز تحت تأثیر قرار گرفته، رانندگی نکنید و از امداد کمک بگیرید."],
-    fuel:["danger","بوی بنزین یا نشتی سوخت خطر آتش‌سوزی دارد. موتور را خاموش کنید، از روشن‌کردن سیگار یا هر منبع جرقه دوری کنید، از خودرو فاصله بگیرید و با امداد تماس بگیرید."]
-  };
-  const d=data[s];
-  setResult("diagnosisResult","<b>"+car+"</b><p>"+d[1]+"</p><p class='muted'>این نتیجه بر اساس قواعد اولیه و اطلاعات واردشده است و تشخیص قطعی محسوب نمی‌شود.</p>"+(detail?"<p><b>توضیح شما:</b> "+escapeHTML(detail)+"</p>":""),d[0]);
-}
-function escapeHTML(str){return str.replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
-function emergencyCheck(){
-  const v=document.getElementById("urgent").value;
-  const urgent=["brake","oil","heat","fuel","smoke"];
-  const messages={
-    brake:"<b>توقف فوری — سطح خطر بسیار بالا</b><p>در محل امن توقف کنید. رانندگی نکنید و با امداد یا یدک‌کش تماس بگیرید.</p>",
-    oil:"<b>توقف فوری — سطح خطر بسیار بالا</b><p>موتور را خاموش کنید. دوباره روشن نکنید تا علت فشار روغن بررسی شود.</p>",
-    heat:"<b>توقف فوری — خطر آسیب موتور</b><p>در محل امن توقف و موتور را خاموش کنید. درپوش سیستم خنک‌کننده را تا سردشدن کامل باز نکنید.</p>",
-    fuel:"<b>توقف فوری — خطر آتش‌سوزی</b><p>موتور را خاموش کنید، از جرقه و شعله دور شوید و با امداد تماس بگیرید.</p>",
-    smoke:"<b>توقف و بررسی فوری</b><p>اگر دود یا بوی سوختگی وجود دارد، در محل امن توقف کنید، موتور را خاموش کنید و در صورت احتمال آتش از خودرو فاصله بگیرید.</p>",
-    flat:"<b>احتیاط</b><p>در محل صاف و دور از ترافیک توقف کنید، فلاشر را روشن کنید و فقط اگر محل کاملاً امن است از زاپاس طبق دفترچه خودرو استفاده کنید. در بزرگراه یا محل ناامن با امداد تماس بگیرید.</p>",
-    other:"<b>نیازمند اطلاعات بیشتر</b><p>در محل امن توقف کنید و چراغ‌های هشدار و علائم را یادداشت کنید. اگر ایمنی خودرو نامطمئن است، رانندگی نکنید.</p>"
-  };
-  setResult("emergencyResult",messages[v],urgent.includes(v)?"danger":"warn");
-}
-const guideData={
- battery:[
- ["ایمن‌سازی","خودرو را در محل امن و صاف متوقف کنید، دنده را در حالت پارک یا خلاص مناسب خودرو قرار دهید و سوئیچ را خاموش کنید."],
- ["بررسی ظاهری","بدون لمس سیم لخت یا قطعات فلزی، فقط ظاهر باتری و کابل‌ها را از نظر شل‌شدگی واضح، خوردگی یا آسیب مشاهده کنید."],
- ["نتیجه","اگر کابل آسیب‌دیده، باتری متورم یا نشتی‌دار است، دستکاری نکنید و از امداد کمک بگیرید. در غیر این صورت تست باتری و شارژ دینام را به متخصص بسپارید."]
- ],
- tire:[
- ["ایمنی","در جای صاف و دور از ترافیک توقف کنید. اگر محل ناامن است، خودتان کنار خودرو کار نکنید."],
- ["بازدید","از فاصله ایمن به دنبال پنچری، برآمدگی، پارگی یا کم‌بادی واضح باشید. به لاستیک داغ یا آسیب‌دیده دست نزنید."],
- ["نتیجه","با برآمدگی یا پارگی دیواره رانندگی نکنید. برای تعویض یا تعمیر ایمن از امداد کمک بگیرید."]
- ],
- coolant:[
- ["سردشدن کامل","موتور باید کاملاً سرد باشد. اگر تازه رانندگی کرده‌اید، صبر کنید تا کاملاً خنک شود."],
- ["مشاهده مخزن","بدون بازکردن درپوش، سطح مایع را از روی علامت MIN و MAX مخزن مشاهده کنید."],
- ["نتیجه","اگر سطح پایین است یا نشتی دیده می‌شود، علت باید بررسی شود. هرگز درپوش رادیاتور داغ را باز نکنید."]
- ]
-};
-let guideIndex=0,guideSteps=[];
-function startGuide(){guideSteps=guideData[document.getElementById("guideProblem").value];guideIndex=0;renderStep();}
-function renderStep(){
- const box=document.getElementById("guideBox");if(!box)return;
- if(guideIndex>=guideSteps.length){box.innerHTML="<div class='result safe'><b>راهنما به پایان رسید.</b><p>اگر مشکل برطرف نشده یا درباره ایمنی مطمئن نیستید، خودرو را به متخصص بسپارید.</p><button class='btn secondary' onclick='startGuide()'>شروع دوباره</button></div>";return;}
- const step=guideSteps[guideIndex],pct=Math.round((guideIndex+1)/guideSteps.length*100);
- box.innerHTML="<div class='progress'><span style='width:"+pct+"%'></span></div><div class='step'><div class='muted'>مرحله "+(guideIndex+1)+" از "+guideSteps.length+"</div><h3>"+step[0]+"</h3><p>"+step[1]+"</p><button class='btn' onclick='guideAnswer()'>متوجه شدم، مرحله بعد</button><button class='btn secondary' onclick='guideStop()'>توقف راهنما</button></div>";
-}
-function guideAnswer(){guideIndex++;renderStep();}
-function guideStop(){document.getElementById("guideBox").innerHTML="<div class='result warn'>راهنما متوقف شد. در صورت تردید از تعمیرکار کمک بگیرید.</div>";}
-function readText(text){
- if(!("speechSynthesis" in window)){alert("خواندن صوتی در این مرورگر پشتیبانی نمی‌شود.");return;}
- window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang="fa-IR";window.speechSynthesis.speak(u);
-}
-function startSpeech(){
- const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
- if(!SR){alert("گفتار به متن در این مرورگر پشتیبانی نمی‌شود. می‌توانید علائم را تایپ کنید.");return;}
- const rec=new SR();rec.lang="fa-IR";rec.interimResults=false;rec.maxAlternatives=1;
- rec.onresult=function(e){document.getElementById("voiceText").value+=(document.getElementById("voiceText").value?" ":"")+e.results[0][0].transcript;};
- rec.onerror=function(){alert("دریافت صدا انجام نشد. اجازه میکروفن و اتصال اینترنت را بررسی کنید.");};
- rec.start();
-}
-document.getElementById("audioFile").addEventListener("change",function(){
- const f=this.files&&this.files[0];document.getElementById("audioInfo").textContent=f?"فایل انتخاب شد: "+f.name+" — پخش یا تحلیل خودکار در این نسخه فعال نیست.":"";
-});
-document.getElementById("imageFile").addEventListener("change",function(){
- const f=this.files&&this.files[0],box=document.getElementById("imagePreview");
- if(!f){box.classList.add("hidden");return;}
- if(!f.type.startsWith("image/")){alert("لطفاً یک فایل تصویری انتخاب کنید.");this.value="";return;}
- const url=URL.createObjectURL(f);box.innerHTML="<b>پیش‌نمایش عکس انتخاب‌شده</b><p>"+escapeHTML(f.name)+"</p><img alt='پیش‌نمایش تصویر خودرو' src='"+url+"' style='max-width:100%;max-height:320px;border-radius:10px'>";box.classList.remove("hidden");
-});
-const cars=[
- ["پراید","سدان اقتصادی؛ بررسی‌های عمومی موتور، خنک‌کاری و ترمز طبق دفترچه"],
- ["پژو ۲۰۶","هاچ‌بک؛ توجه به سیستم خنک‌کاری، برق و سرویس‌های دوره‌ای"],
- ["پژو ۴۰۵","سدان؛ بررسی دوره‌ای موتور، خنک‌کاری و جلوبندی"],
- ["سمند","سدان؛ سرویس منظم موتور، ترمز، تایر و سیستم خنک‌کاری"],
- ["تیبا","سدان؛ بررسی دوره‌ای روغن، تایر، ترمز و برق"],
- ["دنا","سدان؛ نگهداری مطابق دفترچه و سرویس‌های دوره‌ای"],
- ["تارا","سدان؛ توجه به سرویس‌های توصیه‌شده سازنده"],
- ["آریو / زوتی","سدان اتوماتیک؛ سرویس گیربکس و موتور مطابق مشخصات سازنده"]
-];
-function filterCars(){
- const q=document.getElementById("carSearch").value.trim().toLowerCase();
- const found=cars.filter(c=>c.join(" ").toLowerCase().includes(q));
- document.getElementById("carList").innerHTML=found.length?found.map(c=>"<div class='step'><b>"+c[0]+"</b><p>"+c[1]+"</p></div>").join(""):"<p class='muted'>خودرویی پیدا نشد.</p>";
-}
-filterCars();
-
-// ===== EHSAN SMART OBD2 - STABLE VERSION =====
-(function () {
-  const main = document.querySelector("main");
-  const grid = document.querySelector(".grid");
-
-  if (!main || document.getElementById("obd")) return;
-
-  const obdCodes = [
-    ["P0100", "مدار سنسور جریان هوای ورودی MAF", "بررسی سنسور، سوکت و سیم‌کشی", "متوسط"],
-    ["P0101", "عملکرد نامناسب سنسور MAF", "بررسی فیلتر هوا و مسیر ورودی هوا", "متوسط"],
-    ["P0115", "مدار سنسور دمای آب موتور", "بررسی سوکت، سیم‌کشی و سنسور دما", "زیاد"],
-    ["P0118", "سیگنال بالای سنسور دمای آب", "بررسی اتصالات و سنسور دمای آب", "زیاد"],
-    ["P0300", "احتراق ناقص تصادفی موتور", "بررسی شمع، کوئل، انژکتور و سوخت‌رسانی", "زیاد"],
-    ["P0420", "بازده پایین کاتالیزور", "بررسی کاتالیزور و سنسورهای اکسیژن", "متوسط"],
-    ["P0562", "ولتاژ پایین سیستم خودرو", "بررسی باتری، دینام و اتصالات", "زیاد"],
-    ["P0700", "خطای سیستم کنترل گیربکس", "بررسی دیاگ اختصاصی گیربکس و سیم‌کشی", "زیاد"]
-  ];
-
-  // ساخت دکمه دیاگ
-  const card = document.createElement("button");
-  card.type = "button";
-  card.className = "service-card";
-  card.textContent = "🔌 دیاگ هوشمند احسان";
-
-  if (grid) {
-    grid.appendChild(card);
-  } else {
-    main.appendChild(card);
-  }
-
-  // ساخت پنل دیاگ
-  const panel = document.createElement("section");
-  panel.id = "obd";
-  panel.className = "panel card";
-  panel.style.display = "none";
-
-  panel.innerHTML = `
-    <h2>🔌 دیاگ هوشمند احسان</h2>
-    <p>کد خطای خودرو را وارد کنید.</p>
-
-    <input id="obdInput" type="text"
-      maxlength="5" placeholder="مثلاً P0100"
-      style="width:100%;padding:13px;border-radius:10px;">
-
-    <button type="button" id="obdSearch">🔍 بررسی کد خطا</button>
-
-    <div id="obdResult" class="notice" style="margin-top:15px">
-      آماده بررسی کد خطا
-    </div>
-
-    <hr>
-    <h3>🧪 شبیه‌ساز دیاگ</h3>
-
-    <select id="obdDemo" style="width:100%;padding:12px">
-      <option value="">انتخاب خطای آزمایشی</option>
-      <option value="P0300">P0300 - احتراق ناقص</option>
-      <option value="P0420">P0420 - کاتالیزور</option>
-      <option value="P0562">P0562 - ولتاژ پایین</option>
-      <option value="P0700">P0700 - گیربکس</option>
-    </select>
-
-    <button type="button" id="obdTest">اجرای شبیه‌سازی</button>
-    <div id="obdDemoResult" class="notice"></div>
-
-    <hr>
-    <h3>📚 بانک کدهای خطا</h3>
-    <input id="obdFilter" type="search"
-      placeholder="جستجو در بانک کدها..."
-      style="width:100%;padding:12px">
-
-    <div id="obdList"></div>
-
-    <hr>
-    <div class="notice">
-      ⚠️ این نسخه شبیه‌ساز نرم‌افزاری است و هنوز به دستگاه واقعی OBD2 یا ECU خودرو متصل نیست.
-    </div>
-    <div class="notice">
-      هشدار ایمنی: در صورت افت فشار روغن، داغ‌شدن موتور،
-      اختلال ترمز یا لرزش شدید، رانندگی را متوقف کنید.
-    </div>
-  `;
-
-  const mechanics = document.getElementById("mechanics");
-  if (mechanics) {
-    mechanics.insertAdjacentElement("afterend", panel);
-  } else {
-    main.appendChild(panel);
-  }
-
-  // نمایش پنل
-  card.addEventListener("click", function () {
-    document.querySelectorAll(".panel").forEach(function (p) {
-      p.style.display = "none";
+    card.addEventListener("click", function () {
+      document.querySelectorAll(".panel").forEach(function (p) {
+        p.style.display = "none";
+      });
+      panel.style.display = "block";
+      panel.scrollIntoView({ behavior: "smooth", block: "start" });
     });
 
-    panel.style.display = "block";
-    panel.scrollIntoView({
-      behavior: "smooth",
-      block: "start"
-    });
-  });
+    const input = panel.querySelector("#obdInput");
+    const result = panel.querySelector("#obdResult");
+    const list = panel.querySelector("#obdList");
+    const filter = panel.querySelector("#obdFilter");
+    const historyBox = panel.querySelector("#obdHistory");
+    const historyKey = "ehsan_obd_history_v1";
 
-  // نمایش نتیجه
-  function showCode(code, target) {
-    const item = obdCodes.find(x => x[0] === code);
+    function showCode(code, target) {
+      const item = obdCodes.find(x => x[0] === code);
+      if (!item) {
+        target.textContent = "این کد در بانک فعلی ثبت نشده است.";
+        return;
+      }
 
-    if (!item) {
-      target.textContent = "این کد در بانک فعلی ثبت نشده است.";
-      return;
+      target.textContent =
+        item[0] + " — " + item[1] +
+        " | روش بررسی: " + item[2] +
+        " | شدت اولیه: " + item[3] +
+        " | تشخیص قطعی نیازمند بررسی خودرو است.";
+
+      saveHistory(item);
     }
 
-    target.innerHTML = "";
-
-    const title = document.createElement("h3");
-    title.textContent = item[0] + " — " + item[1];
-
-    const cause = document.createElement("p");
-    cause.textContent = "روش بررسی: " + item[2];
-
-    const level = document.createElement("p");
-    level.textContent = "شدت اولیه: " + item[3];
-
-    const note = document.createElement("p");
-    note.textContent =
-      "این نتیجه راهنمای اولیه است و تشخیص قطعی نیازمند بررسی خودرو است.";
-
-    target.append(title, cause, level, note);
-  }
-
-  // جستجوی کد
-  const input = panel.querySelector("#obdInput");
-  const result = panel.querySelector("#obdResult");
-
-  panel.querySelector("#obdSearch").addEventListener("click", function () {
-    const code = input.value.trim().toUpperCase();
-
-    if (!/^P[0-9A-F]{4}$/.test(code)) {
-      result.textContent = "لطفاً کد معتبر مانند P0100 وارد کنید.";
-      return;
+    function getHistory() {
+      try {
+        return JSON.parse(localStorage.getItem(historyKey) || "[]");
+      } catch (e) {
+        return [];
+      }
     }
 
-    showCode(code, result);
-  });
-
-  // شبیه‌ساز
-  panel.querySelector("#obdTest").addEventListener("click", function () {
-    const code = panel.querySelector("#obdDemo").value;
-    const demo = panel.querySelector("#obdDemoResult");
-
-    if (!code) {
-      demo.textContent = "ابتدا یک خطای آزمایشی انتخاب کنید.";
-      return;
-    }
-
-    showCode(code, demo);
-  });
-
-  // بانک کدها
-  const list = panel.querySelector("#obdList");
-  const filter = panel.querySelector("#obdFilter");
-
-  function renderList() {
-    const term = filter.value.trim().toUpperCase();
-    list.innerHTML = "";
-
-    obdCodes
-      .filter(x => x.join(" ").toUpperCase().includes(term))
-      .forEach(function (item) {
-        const row = document.createElement("button");
-        row.type = "button";
-        row.className = "btn";
-        row.style.margin = "5px";
-        row.textContent = item[0] + " — " + item[1];
-
-        row.addEventListener("click", function () {
-          input.value = item[0];
-          showCode(item[0], result);
+    function saveHistory(item) {
+      try {
+        const records = getHistory();
+        records.unshift({
+          code: item[0],
+          name: item[1],
+          date: new Date().toLocaleString("fa-IR")
         });
+        localStorage.setItem(historyKey, JSON.stringify(records.slice(0, 50)));
+        renderHistory();
+      } catch (e) {
+        console.warn("History save failed", e);
+      }
+    }
 
-        list.appendChild(row);
+    function renderHistory() {
+      const records = getHistory();
+      historyBox.innerHTML = "";
+
+      if (!records.length) {
+        historyBox.textContent = "هنوز سابقه‌ای ثبت نشده است.";
+        return;
+      }
+
+      records.forEach(function (record) {
+        const row = document.createElement("p");
+        row.textContent = record.code + " — " + record.name + " | " + record.date;
+        historyBox.appendChild(row);
       });
-  }
-
-  filter.addEventListener("input", renderList);
-  renderList();
-  
-  // ===== EHSAN OBD2 HISTORY =====
-  const historyKey = "ehsan_obd_history_v1";
-
-  function getObdHistory() {
-    try {
-      return JSON.parse(localStorage.getItem(historyKey) || "[]");
-    } catch (e) {
-      return [];
-    }
-  }
-
-  const historyBox = document.createElement("section");
-  historyBox.className = "notice";
-  historyBox.style.marginTop = "15px";
-
-  const historyTitle = document.createElement("h3");
-  historyTitle.textContent = "📚 سوابق عیب‌یابی احسان";
-
-  const historyList = document.createElement("div");
-  const clearButton = document.createElement("button");
-  clearButton.type = "button";
-  clearButton.textContent = "🗑️ پاک کردن سوابق";
-
-  historyBox.append(historyTitle, historyList, clearButton);
-  panel.appendChild(historyBox);
-
-  function renderObdHistory() {
-    const records = getObdHistory();
-    historyList.innerHTML = "";
-
-    if (!records.length) {
-      historyList.textContent = "هنوز سابقه‌ای ثبت نشده است.";
-      return;
     }
 
-    records.forEach(function (record) {
-      const row = document.createElement("p");
-      row.textContent = record.code + " — " +
-        record.name + " | " + record.date;
-      historyList.appendChild(row);
-    });
-  }
+    function renderList() {
+      const term = filter.value.trim().toUpperCase();
+      list.innerHTML = "";
 
-  function saveObdHistory(code) {
-    const item = obdCodes.find(x => x[0] === code);
-    if (!item) return;
-
-    try {
-      const records = getObdHistory();
-
-      records.unshift({
-        code: item[0],
-        name: item[1],
-        date: new Date().toLocaleString("fa-IR")
-      });
-
-      localStorage.setItem(
-        historyKey,
-        JSON.stringify(records.slice(0, 50))
-      );
-
-      renderObdHistory();
-    } catch (e) {
-      console.warn("History save failed", e);
-    }
-  }
-
-  clearButton.addEventListener("click", function () {
-    if (!confirm("سوابق عیب‌یابی پاک شوند؟")) return;
-    localStorage.removeItem(historyKey);
-    renderObdHistory();
-  });
-
-  const oldShowCode = showCode;
-
-  showCode = function (code, target) {
-    oldShowCode(code, target);
-    saveObdHistory(code);
-  };
-
-  renderObdHistory();
-
-
-  // ===== EHSAN OBD2 HISTORY =====
-  const historyKey = "ehsan_obd_history_v1";
-
-  function getObdHistory() {
-    try {
-      return JSON.parse(localStorage.getItem(historyKey) || "[]");
-    } catch (e) {
-      return [];
-    }
-  }
-
-  const historyBox = document.createElement("section");
-  historyBox.className = "notice";
-  historyBox.style.marginTop = "15px";
-
-  const historyTitle = document.createElement("h3");
-  historyTitle.textContent = "📚 سوابق عیب‌یابی احسان";
-
-  const historyList = document.createElement("div");
-  const clearButton = document.createElement("button");
-  clearButton.type = "button";
-  clearButton.textContent = "🗑️ پاک کردن سوابق";
-
-  historyBox.append(historyTitle, historyList, clearButton);
-  panel.appendChild(historyBox);
-
-  function renderObdHistory() {
-    const records = getObdHistory();
-    historyList.innerHTML = "";
-
-    if (!records.length) {
-      historyList.textContent = "هنوز سابقه‌ای ثبت نشده است.";
-      return;
+      obdCodes.filter(x => x.join(" ").toUpperCase().includes(term))
+        .forEach(function (item) {
+          const row = document.createElement("button");
+          row.type = "button";
+          row.className = "btn";
+          row.style.margin = "5px";
+          row.textContent = item[0] + " — " + item[1];
+          row.addEventListener("click", function () {
+            input.value = item[0];
+            showCode(item[0], result);
+          });
+          list.appendChild(row);
+        });
     }
 
-    records.forEach(function (record) {
-      const row = document.createElement("p");
-      row.textContent = record.code + " — " +
-        record.name + " | " + record.date;
-      historyList.appendChild(row);
-    });
-  }
-
-  function saveObdHistory(code) {
-    const item = obdCodes.find(x => x[0] === code);
-    if (!item) return;
-
-    try {
-      const records = getObdHistory();
-
-      records.unshift({
-        code: item[0],
-        name: item[1],
-        date: new Date().toLocaleString("fa-IR")
-      });
-
-      localStorage.setItem(
-        historyKey,
-        JSON.stringify(records.slice(0, 50))
-      );
-
-      renderObdHistory();
-    } catch (e) {
-      console.warn("History save failed", e);
-    }
-  }
-
-  clearButton.addEventListener("click", function () {
-    if (!confirm("سوابق عیب‌یابی پاک شوند؟")) return;
-    localStorage.removeItem(historyKey);
-    renderObdHistory();
-  });
-
-  const oldShowCode = showCode;
-
-  showCode = function (code, target) {
-    oldShowCode(code, target);
-    saveObdHistory(code);
-  };
-
-  renderObdHistory();
-  // ===== END EHSAN OBD2 HISTORY =====
-
-JavaScript
-
-  // ===== EHSAN OBD2 HISTORY =====
-  const historyKey = "ehsan_obd_history_v1";
-
-  function getObdHistory() {
-    try {
-      return JSON.parse(localStorage.getItem(historyKey) || "[]");
-    } catch (e) {
-      return [];
-    }
-  }
-
-  const historyBox = document.createElement("section");
-  historyBox.className = "notice";
-  historyBox.style.marginTop = "15px";
-
-  const historyTitle = document.createElement("h3");
-  historyTitle.textContent = "📚 سوابق عیب‌یابی احسان";
-
-  const historyList = document.createElement("div");
-  const clearButton = document.createElement("button");
-  clearButton.type = "button";
-  clearButton.textContent = "🗑️ پاک کردن سوابق";
-
-  historyBox.append(historyTitle, historyList, clearButton);
-  panel.appendChild(historyBox);
-
-  function renderObdHistory() {
-    const records = getObdHistory();
-    historyList.innerHTML = "";
-
-    if (!records.length) {
-      historyList.textContent = "هنوز سابقه‌ای ثبت نشده است.";
-      return;
-    }
-
-    records.forEach(function (record) {
-      const row = document.createElement("p");
-      row.textContent = record.code + " — " +
-        record.name + " | " + record.date;
-      historyList.appendChild(row);
-    });
-  }
-
-  function saveObdHistory(code) {
-    const item = obdCodes.find(x => x[0] === code);
-    if (!item) return;
-
-    try {
-      const records = getObdHistory();
-
-      records.unshift({
-        code: item[0],
-        name: item[1],
-        date: new Date().toLocaleString("fa-IR")
-      });
-
-      localStorage.setItem(
-        historyKey,
-        JSON.stringify(records.slice(0, 50))
-      );
-
-      renderObdHistory();
-    } catch (e) {
-      console.warn("History save failed", e);
-    }
-  }
-
-  clearButton.addEventListener("click", function () {
-    if (!confirm("سوابق عیب‌یابی پاک شوند؟")) return;
-    localStorage.removeItem(historyKey);
-    renderObdHistory();
-  });
-
-  const oldShowCode = showCode;
-
-  showCode = function (code, target) {
-    oldShowCode(code, target);
-    saveObdHistory(code);
-  };
-
-  renderObdHistory();
-  // ===== END EHSAN OBD2 HISTORY =====
-JavaScript
-
-  // ===== EHSAN OBD2 HISTORY =====
-  const historyKey = "ehsan_obd_history_v1";
-
-  function getObdHistory() {
-    try {
-      return JSON.parse(localStorage.getItem(historyKey) || "[]");
-    } catch (e) {
-      return [];
-    }
-  }
-
-  const historyBox = document.createElement("section");
-  historyBox.className = "notice";
-  historyBox.style.marginTop = "15px";
-
-  const historyTitle = document.createElement("h3");
-  historyTitle.textContent = "📚 سوابق عیب‌یابی احسان";
-
-  const historyList = document.createElement("div");
-  const clearButton = document.createElement("button");
-  clearButton.type = "button";
-  clearButton.textContent = "🗑️ پاک کردن سوابق";
-
-  historyBox.append(historyTitle, historyList, clearButton);
-  panel.appendChild(historyBox);
-
-  function renderObdHistory() {
-    const records = getObdHistory();
-    historyList.innerHTML = "";
-
-    if (!records.length) {
-      historyList.textContent = "هنوز سابقه‌ای ثبت نشده است.";
-      return;
-    }
-
-    records.forEach(function (record) {
-      const row = document.createElement("p");
-      row.textContent = record.code + " — " +
-        record.name + " | " + record.date;
-      historyList.appendChild(row);
-    });
-  }
-
-  function saveObdHistory(code) {
-    const item = obdCodes.find(x => x[0] === code);
-    if (!item) return;
-
-    try {
-      const records = getObdHistory();
-
-      records.unshift({
-        code: item[0],
-        name: item[1],
-        date: new Date().toLocaleString("fa-IR")
-      });
-
-      localStorage.setItem(
-        historyKey,
-        JSON.stringify(records.slice(0, 50))
-      );
-
-      renderObdHistory();
-    } catch (e) {
-      console.warn("History save failed", e);
-    }
-  }
-
-  clearButton.addEventListener("click", function () {
-    if (!confirm("سوابق عیب‌یابی پاک شوند؟")) return;
-    localStorage.removeItem(historyKey);
-    renderObdHistory();
-  });
-
-  const oldShowCode = showCode;
-
-  showCode = function (code, target) {
-    oldShowCode(code, target);
-    saveObdHistory(code);
-  };
-
-  renderObdHistory();
-  
-  // ===== EHSAN OBD2 HISTORY =====
-  const historyKey = "ehsan_obd_history_v1";
-
-  function getObdHistory() {
-    try {
-      return JSON.parse(localStorage.getItem(historyKey) || "[]");
-    } catch (e) {
-      return [];
-    }
-  }
-
-  const historyBox = document.createElement("section");
-  historyBox.className = "notice";
-  historyBox.style.marginTop = "15px";
-
-  const historyTitle = document.createElement("h3");
-  historyTitle.textContent = "📚 سوابق عیب‌یابی احسان";
-
-  const historyList = document.createElement("div");
-  const clearButton = document.createElement("button");
-  clearButton.type = "button";
-  clearButton.textContent = "🗑️ پاک کردن سوابق";
-
-  historyBox.append(historyTitle, historyList, clearButton);
-  panel.appendChild(historyBox);
-
-  function renderObdHistory() {
-    const records = getObdHistory();
-    historyList.innerHTML = "";
-
-    if (!records.length) {
-      historyList.textContent = "هنوز سابقه‌ای ثبت نشده است.";
-      return;
-    }
-
-    records.forEach(function (record) {
-      const row = document.createElement("p");
-      row.textContent = record.code + " — " +
-        record.name + " | " + record.date;
-      historyList.appendChild(row);
-    });
-  }
-
-  function saveObdHistory(code) {
-    const item = obdCodes.find(x => x[0] === code);
-    if (!item) return;
-
-    try {
-      const records = getObdHistory();
-
-      records.unshift({
-        code: item[0],
-        name: item[1],
-        date: new Date().toLocaleString("fa-IR")
-      });
-
-      localStorage.setItem(
-        historyKey,
-        JSON.stringify(records.slice(0, 50))
-      );
-
-      renderObdHistory();
-    } catch (e) {
-      console.warn("History save failed", e);
-    }
-  }
-
-  clearButton.addEventListener("click", function () {
-    if (!confirm("سوابق عیب‌یابی پاک شوند؟")) return;
-    localStorage.removeItem(historyKey);
-    renderObdHistory();
-  });
-
-  const oldShowCode = showCode;
-
-  showCode = function (code, target) {
-    oldShowCode(code, target);
-    saveObdHistory(code);
-  };
-
-  renderObdHistory();
-  // ===== END EHSAN OBD2 HISTORY =====
-
-  // ===== EHSAN OBD2 HISTORY =====
-  const historyKey = "ehsan_obd_history_v1";
-
-  function getObdHistory() {
-    try {
-      return JSON.parse(localStorage.getItem(historyKey) || "[]");
-    } catch (e) {
-      return [];
-    }
-  }
-
-  const historyBox = document.createElement("section");
-  historyBox.className = "notice";
-  historyBox.style.marginTop = "15px";
-
-  const historyTitle = document.createElement("h3");
-  historyTitle.textContent = "📚 سوابق عیب‌یابی احسان";
-
-  const historyList = document.createElement("div");
-  const clearButton = document.createElement("button");
-  clearButton.type = "button";
-  clearButton.textContent = "🗑️ پاک کردن سوابق";
-
-  historyBox.append(historyTitle, historyList, clearButton);
-  panel.appendChild(historyBox);
-
-  function renderObdHistory() {
-    const records = getObdHistory();
-    historyList.innerHTML = "";
-
-    if (!records.length) {
-      historyList.textContent = "هنوز سابقه‌ای ثبت نشده است.";
-      return;
-    }
-
-    records.forEach(function (record) {
-      const row = document.createElement("p");
-      row.textContent = record.code + " — " +
-        record.name + " | " + record.date;
-      historyList.appendChild(row);
-    });
-  }
-
-  function saveObdHistory(code) {
-    const item = obdCodes.find(x => x[0] === code);
-    if (!item) return;
-
-    try {
-      const records = getObdHistory();
-
-      records.unshift({
-        code: item[0],
-        name: item[1],
-        date: new Date().toLocaleString("fa-IR")
-      });
-
-      localStorage.setItem(
-        historyKey,
-        JSON.stringify(records.slice(0, 50))
-      );
-
-      renderObdHistory();
-    } catch (e) {
-      console.warn("History save failed", e);
-    }
-  }
-
-  clearButton.addEventListener("click", function () {
-    if (!confirm("سوابق عیب‌یابی پاک شوند؟")) return;
-    localStorage.removeItem(historyKey);
-    renderObdHistory();
-  });
-
-  const oldShowCode = showCode;
-
-  showCode = function (code, target) {
-    oldShowCode(code, target);
-    saveObdHistory(code);
-  };
-
-  renderObdHistory();
-  
-// ===== EHSAN OBD2 HISTORY =====
-const historyKey = "ehsan_obd_history_v1";
-
-function getObdHistory() {
-  try {
-    return JSON.parse(localStorage.getItem(historyKey) || "[]");
-  } catch (e) {
-    return [];
-  }
-}
-const historyBox = document.createElement("section");
-historyBox.className = "notice";
-historyBox.style.marginTop = "15px";
-
-const historyTitle = document.createElement("h3");
-historyTitle.textContent = "📚 سوابق عیب‌یابی احسان";
-
-const historyList = document.createElement("div");
-const clearButton = document.createElement("button");
-clearButton.type = "button";
-clearButton.textContent = "🗑️ پاک کردن سوابق";
-
-historyBox.append(historyTitle, historyList, clearButton);
-panel.appendChild(historyBox);function renderObdHistory() {
-  const records = getObdHistory();
-  historyList.innerHTML = "";
-
-  if (!records.length) {
-    historyList.textContent = "هنوز سابقه‌ای ثبت نشده است.";
-    return;
-  }
-
-  records.forEach(function (record) {
-    const row = document.createElement("p");
-    row.textContent = record.code + " — " +
-      record.name + " | " + record.date;
-    historyList.appendChild(row);
-  });
-}
-  function saveObdHistory(code) {
-  const item = obdCodes.find(x => x[0] === code);
-  if (!item) return;
-
-  try {
-    const records = getObdHistory();
-
-    records.unshift({
-      code: item[0],
-      name: item[1],
-      date: new Date().toLocaleString("fa-IR")
+    panel.querySelector("#obdSearch").addEventListener("click", function () {
+      const code = input.value.trim().toUpperCase();
+      if (!/^P[0-9A-F]{4}$/.test(code)) {
+        result.textContent = "لطفاً کد معتبر مانند P0100 وارد کنید.";
+        return;
+      }
+      showCode(code, result);
     });
 
-    localStorage.setItem(
-      historyKey,
-      JSON.stringify(records.slice(0, 50))
-    );
+    panel.querySelector("#obdTest").addEventListener("click", function () {
+      const code = panel.querySelector("#obdDemo").value;
+      const demo = panel.querySelector("#obdDemoResult");
+      if (!code) {
+        demo.textContent = "ابتدا یک خطای آزمایشی انتخاب کنید.";
+        return;
+      }
+      showCode(code, demo);
+    });
 
-    renderObdHistory();
-  } catch (e) {
-    console.warn("History save failed", e);
-  }
-                                           }.log("EHSAN SMART OBD2 READY");
-})();clearButton.addEventListener("click", function () {
-  if (!confirm("سوابق عیب‌یابی پاک شوند؟")) return;
-  localStorage.removeItem(historyKey);
-  renderObdHistory();
-});
+    filter.addEventListener("input", renderList);
 
-const oldShowCode = showCode;
+    panel.querySelector("#obdClear").addEventListener("click", function () {
+      if (!confirm("سوابق عیب‌یابی پاک شوند؟")) return;
+      localStorage.removeItem(historyKey);
+      renderHistory();
+    });
 
-showCode = function (code, target) {
-  oldShowCode(code, target);
-  saveObdHistory(code);
-};
+    renderList();
+    renderHistory();
 
-renderObdHistory();
-// ===== END EHSAN OBD2 HISTORY =====
-
+    console.log("EHSAN SMART OBD2 READY");
+  })();
+  // ===== END EHSAN SMART OBD2 =====  
 </script>
 </body>
      </html>
