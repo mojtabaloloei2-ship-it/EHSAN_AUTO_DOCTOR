@@ -158,17 +158,24 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px}
 <h2>🔧 عیب‌یابی هوشمند احسان</h2>
 
 <label>خودرو</label>
+
 <select id="diagCar">
-<option>پراید</option>
-<option>پژو 206</option>
-<option>پژو 405</option>
-<option>سمند</option>
-<option>تیبا</option>
-<option>دنا</option>
-<option>آریو زوتی</option>
-<option>خودروی چینی</option>
-<option>سایر خودروها</option>
+  <option value="pride">پراید</option>
+  <option value="206">پژو 206</option>
+  <option value="405">پژو 405</option>
+  <option value="dena">دنا</option>
+  <option value="ario">آریو زوتی</option>
+  <option value="pars">پژو پارس</option>
+  <option value="samand">سمند</option>
+  <option value="tiba">تیبا</option>
+  <option value="saina">ساینا</option>
+  <option value="quick">کوییک</option>
+  <option value="denaplus">دنا پلاس</option>
+  <option value="tara">تارا</option>
+  <option value="shahin">شاهین</option>
+  <option value="l90">تندر 90 (ال 90)</option>
 </select>
+
 
 <label>علامت یا مشکل خودرو</label>
 <select id="symptom">
@@ -373,8 +380,15 @@ out.textContent="لطفاً ابتدا مشکل خودرو را انتخاب ک�
 return;
 }
 
-out.textContent="خودرو: "+car+" | نتیجه اولیه: "+diagnosis[s]+
-(details?" | توضیحات شما: "+details:"")+
+
+const carName = document.getElementById("diagCar").selectedOptions[0].textContent;
+const carTechnicalInfo = carData[car] || "اطلاعات فنی این خودرو ثبت نشده است.";
+
+out.textContent =
+"خودرو: " + carName +
+" | مشخصات و موارد بررسی: " + carTechnicalInfo +
+" | نتیجه اولیه: " + diagnosis[s] +
+(details ? " | توضیحات شما: " + details : "") +
 " تشخیص قطعی نیازمند بررسی فنی خودرو است.";
 
 try{
@@ -512,13 +526,6 @@ carSelect.addEventListener("change", function() {
   document.getElementById("carInfo").textContent =
     info || "برای این خودرو هنوز اطلاعات فنی ثبت نشده است.";
 });
-
-
-document.getElementById("carSelect").addEventListener("change",function(){
-document.getElementById("carInfo").textContent=
-carData[this.value]||"خودرو را انتخاب کنید.";
-});
-
 
 /* بانک توسعه‌یافته کدهای دیاگ احسان */
 
